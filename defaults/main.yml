@@ -1,0 +1,57 @@
+---
+# defaults file for ansible-netbox
+netbox_app_path: "{{ netbox_home + '/netbox/netbox' }}"
+netbox_db_host: localhost
+netbox_db_password: netbox
+netbox_db_user: netbox
+netbox_db: netbox
+
+netbox_debian_pre_reqs:
+  - build-essential
+  - graphviz
+  - libffi-dev
+  - libpq-dev
+  - libssl-dev
+  - libxml2-dev
+  - libxslt1-dev
+  - nginx
+  - python3
+  - python3-dev
+  - python3-pip
+  - python3-venv
+  - supervisor
+  - zlib1g-dev
+
+netbox_group: netbox
+netbox_home: "{{ netbox_install_dir + '/netbox' }}"
+netbox_install_dir: /opt
+netbox_pri_domain: vagrant.local
+
+netbox_secret_key: U-7xmCcYFBovnLf#)NT1yJjrZhD*qP_zt$bA=si65MeI^92Gdl
+
+netbox_superuser_password: netbox
+netbox_superuser_username: netbox
+netbox_superuser_email: "netbox@{{ netbox_pri_domain }}"
+
+# https://github.com/lae/ansible-role-netbox/blob/master/vars/main.yml
+netbox_superuser_script: |
+  from django.contrib.auth.models import User
+  from base64 import b64decode
+  password = b64decode("{{ netbox_superuser_password | b64encode }}").decode("UTF-8")
+  query = User.objects.filter(username="{{ netbox_superuser_username }}")
+  if not query.exists():
+    User.objects.create_superuser("{{ netbox_superuser_username }}", "{{ netbox_superuser_email }}", password)
+    print("changed")
+  else:
+    user = User.objects.get(username="{{ netbox_superuser_username }}")
+    if not user.is_superuser or user.email != "{{ netbox_superuser_email }}" or not user.check_password(password):
+      user.is_superuser = True
+      user.is_staff = True
+      user.email = "{{ netbox_superuser_email }}"
+      user.set_password(password)
+      user.save()
+      print("changed")
+
+netbox_user: netbox
+netbox_version: 2.5.8
+netbox_virtualenv: "{{ netbox_home + '/venv' }}"

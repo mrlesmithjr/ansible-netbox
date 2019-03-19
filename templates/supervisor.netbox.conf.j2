@@ -1,0 +1,9 @@
+[program:netbox]
+command = {{ netbox_virtualenv + '/bin/gunicorn' + ' -c ' + netbox_home + '/gunicorn_config.py netbox.wsgi' }}
+directory = {{ netbox_app_path }}
+user = www-data
+
+[program:netbox-rqworker]
+command = {{ netbox_virtualenv + '/bin/python3' + ' ' + netbox_app_path + '/manage.py rqworker' }}
+directory = {{ netbox_app_path }}
+user = www-data

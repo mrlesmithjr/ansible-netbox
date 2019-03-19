@@ -1,0 +1,8 @@
+---
+- name: debian | Installing Pre-Reqs
+  apt:
+    name: "{{ netbox_debian_pre_reqs }}"
+    state: present
+  become: true
+  register: result
+  until: result is successful

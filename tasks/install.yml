@@ -1,0 +1,124 @@
+---
+- name: install | Ensuring {{ netbox_group }} Group Exists
+  group:
+    name: "{{ netbox_group }}"
+  become: true
+
+- name: install | Ensuring {{ netbox_user }} User Exists
+  user:
+    name: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    home: "{{ netbox_home }}"
+    shell: /bin/bash
+  become: true
+
+- name: install | Downloading Netbox {{ netbox_version }}
+  unarchive:
+    src: "{{ 'https://github.com/digitalocean/netbox/archive/v' + netbox_version|string + '.tar.gz' }}"
+    dest: "{{ netbox_home }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    remote_src: true
+  become: true
+
+- name: install | Creating Symlink To {{ netbox_version }}
+  file:
+    src: "{{ netbox_home + '/netbox-' + netbox_version|string }}"
+    dest: "{{ netbox_home + '/netbox' }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    state: link
+  become: true
+
+- name: install | Creating {{ netbox_virtualenv }}
+  pip:
+    requirements: "{{ netbox_home + '/netbox/requirements.txt' }}"
+    virtualenv: "{{ netbox_virtualenv }}"
+    virtualenv_command: /usr/bin/python3 -m venv
+  become: true
+  become_user: "{{ netbox_user }}"
+
+- name: install | Installing gunicorn
+  pip:
+    name: gunicorn
+    virtualenv: "{{ netbox_virtualenv }}"
+  become: true
+  become_user: "{{ netbox_user }}"
+
+- name: install | Configuring Netbox
+  template:
+    src: configuration.py.j2
+    dest: "{{ netbox_app_path + '/netbox/configuration.py' }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  become: true
+
+- name: install | Running Database Migrations
+  django_manage:
+    app_path: "{{ netbox_app_path }}"
+    command: migrate
+    virtualenv: "{{ netbox_virtualenv }}"
+  become: true
+  become_user: "{{ netbox_user }}"
+
+# https://github.com/lae/ansible-role-netbox/blob/master/tasks/deploy_netbox.yml
+- name: install | Create a super user for NetBox
+  shell: "printf '{{ netbox_superuser_script }}' |\
+    {{ netbox_virtualenv + '/bin/python' + ' ' + netbox_app_path + '/manage.py shell' }}"
+  register: _netbox_superuser_result
+  changed_when: "'changed' in _netbox_superuser_result['stdout']"
+  become: true
+  become_user: "{{ netbox_user }}"
+
+- name: install | Collect Static Files
+  django_manage:
+    app_path: "{{ netbox_app_path }}"
+    command: collectstatic
+    virtualenv: "{{ netbox_virtualenv }}"
+  become: true
+  become_user: "{{ netbox_user }}"
+
+- name: install | Removing NGINX Default Site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+  become: true
+  notify:
+    - restart nginx
+
+- name: install | Configuring Netbox NGINX Site
+  template:
+    src: netbox.nginx.conf.j2
+    dest: /etc/nginx/sites-available/netbox
+  become: true
+  notify:
+    - restart nginx
+
+- name: install | Creating Symlink For Netbox Site
+  file:
+    src: /etc/nginx/sites-available/netbox
+    dest: /etc/nginx/sites-enabled/netbox
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+    state: link
+  become: true
+  notify:
+    - restart nginx
+
+- name: install | Configuring gunicorn
+  template:
+    src: gunicorn.py.j2
+    dest: "{{ netbox_home + '/gunicorn_config.py' }}"
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
+  become: true
+  notify:
+    - restart supervisor
+
+- name: install | Configuring supervisord
+  template:
+    src: supervisor.netbox.conf.j2
+    dest: /etc/supervisor/conf.d/netbox.conf
+  become: true
+  notify:
+    - restart supervisor

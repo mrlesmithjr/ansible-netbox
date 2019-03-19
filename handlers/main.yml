@@ -1,0 +1,15 @@
+---
+# handlers file for ansible-netbox
+- name: restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: true
+  become: true
+
+- name: restart supervisor
+  service:
+    name: supervisor
+    state: restarted
+    enabled: true
+  become: true

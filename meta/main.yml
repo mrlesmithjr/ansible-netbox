@@ -1,0 +1,14 @@
+galaxy_info:
+  author: your name
+  description: your description
+  license: license (GPLv2, CC-BY, etc)
+
+  min_ansible_version: 2.4
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+
+  galaxy_tags: []
+
+dependencies: []
