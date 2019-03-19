@@ -4,11 +4,17 @@ An Ansible role to install/configure [Netbox](https://github.com/digitalocean/ne
 
 ## Requirements
 
+[requirements.yml](requirements.yml)
+
 ## Role Variables
+
+[defaults/main.yml](defaults/main.yml)
 
 ## Dependencies
 
 ## Example Playbook
+
+[playbook.yml](playbook.yml)
 
 ## License
 
