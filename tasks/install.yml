@@ -37,6 +37,8 @@
     virtualenv_command: /usr/bin/python3 -m venv
   become: true
   become_user: "{{ netbox_user }}"
+  vars:
+    ansible_ssh_pipelining: true
 
 - name: install | Installing gunicorn
   pip:
@@ -44,6 +46,8 @@
     virtualenv: "{{ netbox_virtualenv }}"
   become: true
   become_user: "{{ netbox_user }}"
+  vars:
+    ansible_ssh_pipelining: true
 
 - name: install | Configuring Netbox
   template:
@@ -60,6 +64,8 @@
     virtualenv: "{{ netbox_virtualenv }}"
   become: true
   become_user: "{{ netbox_user }}"
+  vars:
+    ansible_ssh_pipelining: true
 
 # https://github.com/lae/ansible-role-netbox/blob/master/tasks/deploy_netbox.yml
 - name: install | Create a super user for NetBox
@@ -69,6 +75,8 @@
   changed_when: "'changed' in _netbox_superuser_result['stdout']"
   become: true
   become_user: "{{ netbox_user }}"
+  vars:
+    ansible_ssh_pipelining: true
 
 - name: install | Collect Static Files
   django_manage:
@@ -77,6 +85,8 @@
     virtualenv: "{{ netbox_virtualenv }}"
   become: true
   become_user: "{{ netbox_user }}"
+  vars:
+    ansible_ssh_pipelining: true
 
 - name: install | Removing NGINX Default Site
   file:
