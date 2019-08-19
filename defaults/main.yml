@@ -53,5 +53,5 @@ netbox_superuser_script: |
       print("changed")
 
 netbox_user: netbox
-netbox_version: 2.5.8
+netbox_version: 2.6.2
 netbox_virtualenv: "{{ netbox_home + '/venv' }}"

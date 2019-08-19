@@ -21,3 +21,9 @@ An Ansible role to install/configure [Netbox](https://github.com/digitalocean/ne
 MIT
 
 ## Author Information
+
+Larry Smith Jr.
+
+- [@mrlesmithjr](https://www.twitter.com/mrlesmithjr)
+- [EverythingShouldBeVirtual](http://everythingshouldbevirtual.com)
+- [mrlesmithjr@gmail.com](mailto:mrlesmithjr@gmail.com)
