@@ -1,7 +1,8 @@
+---
 galaxy_info:
-  author: your name
-  description: your description
-  license: license (GPLv2, CC-BY, etc)
+  author: Larry Smith Jr.
+  description: An Ansible role to install/configure NetBox
+  license: MIT
 
   min_ansible_version: 2.4
   platforms:
@@ -9,6 +10,8 @@ galaxy_info:
       versions:
         - bionic
 
-  galaxy_tags: []
+  galaxy_tags:
+    - system
+    - network
 
 dependencies: []
