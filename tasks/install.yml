@@ -90,6 +90,8 @@
   template:
     src: netbox.nginx.conf.j2
     dest: /etc/nginx/sites-available/netbox
+    owner: "{{ netbox_user }}"
+    group: "{{ netbox_group }}"
   become: true
   notify:
     - restart nginx
