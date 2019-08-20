@@ -1,0 +1,11 @@
+---
+- name: tags | Manage Tag(s)
+  nbox_tags:
+    color: "{{ item['color']|default(omit) }}"
+    comments: "{{ item['comments']|default(omit) }}"
+    name: "{{ item['name'] }}"
+    netbox_token: "{{ netbox_token }}"
+    netbox_url: "{{ netbox_url }}"
+    state: "{{ item['state']|default('present') }}"
+  loop: "{{ netbox_tags }}"
+  delegate_to: localhost
