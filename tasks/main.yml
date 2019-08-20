@@ -4,3 +4,7 @@
   when: ansible_os_family == 'Debian'
 
 - include: install.yml
+
+- include: tenant_groups.yml
+
+- include: tenants.yml

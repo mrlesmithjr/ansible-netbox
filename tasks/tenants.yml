@@ -1,0 +1,13 @@
+---
+- name: tenants | Manage Tenant(s)
+  nbox_tenant:
+    comments: "{{ item['comments']|default(omit) }}"
+    description: "{{ item['description']|default(omit) }}"
+    group: "{{ item['group']|default(omit) }}"
+    name: "{{ item['name'] }}"
+    netbox_token: "{{ netbox_token }}"
+    netbox_url: "{{ netbox_url }}"
+    state: "{{ item['state']|default('present') }}"
+    tags: "{{ item['tags']|default(omit) }}"
+  loop: "{{ netbox_tenants }}"
+  delegate_to: localhost

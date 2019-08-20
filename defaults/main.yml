@@ -55,3 +55,43 @@ netbox_superuser_script: |
 netbox_user: netbox
 netbox_version: 2.6.2
 netbox_virtualenv: "{{ netbox_home + '/venv' }}"
+
+### Everything below is based on custom module(s)
+# Define your user token
+netbox_token: null
+
+# Define url for NetBox API
+netbox_url: http://127.0.0.1:8080
+
+# Define tenant groups
+netbox_tenant_groups:
+  []
+  # - name: Acquisitions
+  #   state: present
+  # - name: Customers
+  #   state: present
+
+# Define tenants
+netbox_tenants:
+  []
+  # - name: Acquisition1
+  #   group: Acquisitions
+  #   state: present
+  #   description: Acquisition 1 Tenant
+  #   comments: Acquisition 1 Tenant
+  #   tags:
+  #     - Not Monitored
+  # - name: Customer1
+  #   group: Customers
+  #   state: present
+  #   description: Customer 1 Tenant
+  #   comments: Customer 1 Tenant
+  #   tags:
+  #     - Monitored
+  # - name: Customer2
+  #   group: Customers
+  #   state: present
+  #   description: Customer 2 Tenant
+  #   comments: Customer 2 Tenant
+  #   tags:
+  #     - Monitored
