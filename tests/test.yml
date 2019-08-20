@@ -1,5 +1,56 @@
 ---
 - hosts: localhost
-  remote_user: root
-  roles:
-    - ansible-netbox
+  connection: local
+  gather_facts: false
+  vars:
+    netbox_tenant_groups:
+      - name: Acquisitions
+        state: present
+      - name: Customers
+        state: present
+    netbox_tenants:
+      - name: Acquisition1
+        group: Acquisitions
+        state: present
+        description: Acquisition 1 Tenant
+        comments: Acquisition 1 Tenant
+        tags:
+          - Not Monitored
+      - name: Customer1
+        group: Customers
+        state: present
+        description: Customer 1 Tenant
+        comments: Customer 1 Tenant
+        tags:
+          - Monitored
+      - name: Customer2
+        group: Customers
+        state: present
+        description: Customer 2 Tenant
+        comments: Customer 2 Tenant
+        tags:
+          - Monitored
+
+    netbox_token: 4f552cc2e8c3b76d9613a591e3adb58984a19a6f
+    netbox_url: http://127.0.0.1:8080
+
+  tasks:
+    - name: Manage Tenant Group(s)
+      nbox_tenant_group:
+        name: "{{ item['name'] }}"
+        netbox_token: "{{ netbox_token }}"
+        netbox_url: "{{ netbox_url }}"
+        state: "{{ item['state']|default('present') }}"
+      loop: "{{ netbox_tenant_groups }}"
+
+    - name: Manage Tenant(s)
+      nbox_tenant:
+        comments: "{{ item['comments']|default(omit) }}"
+        description: "{{ item['description']|default(omit) }}"
+        group: "{{ item['group']|default(omit) }}"
+        name: "{{ item['name'] }}"
+        netbox_token: "{{ netbox_token }}"
+        netbox_url: "{{ netbox_url }}"
+        state: "{{ item['state']|default('present') }}"
+        tags: "{{ item['tags']|default(omit) }}"
+      loop: "{{ netbox_tenants }}"
