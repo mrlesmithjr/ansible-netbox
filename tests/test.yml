@@ -3,6 +3,15 @@
   connection: local
   gather_facts: false
   vars:
+    netbox_tags:
+      - name: Monitored
+        color: 4caf50
+        state: present
+        comments: Monitored Tag
+      - name: Not Monitored
+        color: aa1409
+        state: present
+        comments: Not Monitored Tag
     netbox_tenant_groups:
       - name: Acquisitions
         state: present
@@ -35,6 +44,16 @@
     netbox_url: http://127.0.0.1:8080
 
   tasks:
+    - name: Manage Tag(s)
+      nbox_tags:
+        color: "{{ item['color']|default(omit) }}"
+        comments: "{{ item['comments']|default(omit) }}"
+        name: "{{ item['name'] }}"
+        netbox_token: "{{ netbox_token }}"
+        netbox_url: "{{ netbox_url }}"
+        state: "{{ item['state']|default('present') }}"
+      loop: "{{ netbox_tags }}"
+
     - name: Manage Tenant Group(s)
       nbox_tenant_group:
         name: "{{ item['name'] }}"

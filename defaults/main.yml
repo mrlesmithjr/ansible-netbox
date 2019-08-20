@@ -63,6 +63,18 @@ netbox_token: null
 # Define url for NetBox API
 netbox_url: http://127.0.0.1:8080
 
+# Define tags
+netbox_tags:
+  []
+  # - name: Monitored
+  #   color: 4caf50
+  #   state: present
+  #   comments: Monitored Tag
+  # - name: Not Monitored
+  #   color: aa1409
+  #   state: present
+  #   comments: Not Monitored Tag
+
 # Define tenant groups
 netbox_tenant_groups:
   []
