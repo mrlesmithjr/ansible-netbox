@@ -5,6 +5,8 @@
 
 - include: install.yml
 
+- include: tags.yml
+
 - include: tenant_groups.yml
 
 - include: tenants.yml
