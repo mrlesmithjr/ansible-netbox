@@ -1,4 +1,4 @@
 ---
 - src: https://github.com/mrlesmithjr/ansible-bootstrap-python.git
 - src: https://github.com/mrlesmithjr/ansible-postgresql
-- src: https://github.com/mrlesmithjr/ansible-redis
+# - src: https://github.com/mrlesmithjr/ansible-redis
