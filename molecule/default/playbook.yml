@@ -12,5 +12,4 @@
         state: present
   roles:
     - role: ansible-postgresql
-    # - role: ansible-redis
     - role: ansible-netbox
