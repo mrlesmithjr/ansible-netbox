@@ -1,6 +1,6 @@
 ---
 - name: tags | Manage Tag(s)
-  nbox_tags:
+  nbox_tag:
     color: "{{ item['color']|default(omit) }}"
     comments: "{{ item['comments']|default(omit) }}"
     name: "{{ item['name'] }}"
