@@ -9,9 +9,9 @@ import requests
 
 
 def main():
-    """
+    '''
     Main module execution
-    """
+    '''
     argument_spec = dict(
         name=dict(type='str', required=True),
         netbox_token=dict(type='str', required=True),
@@ -27,11 +27,11 @@ def main():
 
     group = module.params['name']
     state = module.params['state']
-    data = {"group": group, "state": state}
+    data = {'group': group, 'state': state}
 
     headers = {
-        'Authorization': f"Token {token}",
-        'Content-Type': "application/json",
+        'Authorization': f'Token {token}',
+        'Content-Type': 'application/json',
     }
 
     existing_tenant_groups = get_tenant_groups(url, headers)
@@ -40,26 +40,26 @@ def main():
         if state == 'present':
             add_tenant_group(url, headers, data, results)
         else:
-            results.update(msg=f"{group} already deleted!")
+            results.update(msg=f'{group} already deleted!')
 
     else:
         if state == 'present':
-            results.update({'msg': f"{group} already exists!"})
+            results.update({'msg': f'{group} already exists!'})
         else:
             group_id = existing_tenant_groups[group].get('id')
-            data.update({"group_id": group_id})
+            data.update({'group_id': group_id})
             delete_tenant_group(url, headers, data, results)
 
     module.exit_json(**results)
 
 
 def get_tenant_groups(url, headers):
-    """
+    '''
     Get dictionary of existing tenant groups
-    """
+    '''
     api_url = f'{url}/api/tenancy/tenant-groups/'
     tenant_groups = dict()
-    response = requests.request("GET", api_url, headers=headers)
+    response = requests.request('GET', api_url, headers=headers)
     json_response = response.json()
     for group in json_response['results']:
         tenant_groups[group['name']] = {
@@ -71,9 +71,9 @@ def get_tenant_groups(url, headers):
 
 
 def add_tenant_group(url, headers, data, results):
-    """
+    '''
     Add new tenant group
-    """
+    '''
     api_url = f'{url}/api/tenancy/tenant-groups/'
     group = data.get('group')
     if '-' in group:
@@ -83,26 +83,26 @@ def add_tenant_group(url, headers, data, results):
     else:
         slug = group.lower()
 
-    payload = {"name": group, "slug": slug}
+    payload = {'name': group, 'slug': slug}
     response = requests.request(
-        "POST", api_url, data=json.dumps(payload), headers=headers)
+        'POST', api_url, data=json.dumps(payload), headers=headers)
     if response.status_code == 201:
-        results.update(changed=True, msg=f"{group} successfully created!")
+        results.update(changed=True, msg=f'{group} successfully created!')
     else:
         results.update(changed=False, msg=response.status_code)
 
 
 def delete_tenant_group(url, headers, data, results):
-    """
+    '''
     Delete existing tenant group
-    """
+    '''
     group = data.get('group')
     group_id = data.get('group_id')
     api_url = f'{url}/api/tenancy/tenant-groups/{group_id}'
     response = requests.request(
-        "DELETE", api_url, headers=headers)
+        'DELETE', api_url, headers=headers)
     if response.status_code == 204:
-        results.update(changed=True, msg=f"{group} successfully deleted!")
+        results.update(changed=True, msg=f'{group} successfully deleted!')
     else:
         results.update(changed=False, msg=response.status_code)
 
