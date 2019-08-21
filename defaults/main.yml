@@ -26,7 +26,16 @@ netbox_debian_pre_reqs:
 netbox_group: netbox
 netbox_home: "{{ netbox_install_dir + '/netbox' }}"
 netbox_install_dir: /opt
+
+# Expose Prometheus monitoring metrics at the HTTP endpoint '/metrics'
+netbox_metrics_enabled: false
+
 netbox_pri_domain: vagrant.local
+
+# Redis configurations
+netbox_redis_host: localhost
+netbox_redis_password: ""
+netbox_redis_port: 6379
 
 netbox_secret_key: U-7xmCcYFBovnLf#)NT1yJjrZhD*qP_zt$bA=si65MeI^92Gdl
 
