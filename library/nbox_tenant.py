@@ -10,9 +10,9 @@ import requests
 
 
 def main():
-    """
+    '''
     Main module execution
-    """
+    '''
     argument_spec = dict(
         comments=dict(type='str', default=''),
         description=dict(type='str', default=''),
@@ -36,11 +36,11 @@ def main():
     description = module.params.get('description')
     comments = module.params.get('comments')
     tags = module.params.get('tags')
-    data = {"group": group, "tenant": tenant, "state": state,
-            "description": description, "comments": comments, "tags": tags}
+    data = {'group': group, 'tenant': tenant, 'state': state,
+            'description': description, 'comments': comments, 'tags': tags}
     headers = {
-        'Authorization': f"Token {token}",
-        'Content-Type': "application/json",
+        'Authorization': f'Token {token}',
+        'Content-Type': 'application/json',
     }
 
     existing_tenant_groups = get_tenant_groups(url, headers)
@@ -49,15 +49,15 @@ def main():
     if state == 'present':
         if (group is not None and
                 group not in existing_tenant_groups):
-            module.fail_json(msg=f"{group} not found!")
+            module.fail_json(msg=f'{group} not found!')
         else:
             group_id = existing_tenant_groups[group].get('id')
-            data.update({"group_id": group_id})
+            data.update({'group_id': group_id})
             if tenant not in existing_tenants:
                 add_tenant(url, headers, data, results)
             else:
                 # tenant_id = existing_tenants[tenant].get('id')
-                # data.update({"tenant_id": tenant_id})
+                # data.update({'tenant_id': tenant_id})
                 update_tenant(url, headers, existing_tenants, data, results)
     else:
         if tenant in existing_tenants:
@@ -67,12 +67,12 @@ def main():
 
 
 def get_tenant_groups(url, headers):
-    """
+    '''
     Get dictionary of existing tenant groups
-    """
+    '''
     api_url = f'{url}/api/tenancy/tenant-groups/'
     tenant_groups = dict()
-    response = requests.request("GET", api_url, headers=headers)
+    response = requests.request('GET', api_url, headers=headers)
     json_response = response.json()
     for group in json_response['results']:
         tenant_groups[group['name']] = {
@@ -84,12 +84,12 @@ def get_tenant_groups(url, headers):
 
 
 def get_tenants(url, headers):
-    """
+    '''
     Get dictionary of existing tenants
-    """
+    '''
     api_url = f'{url}/api/tenancy/tenants/'
     tenants = dict()
-    response = requests.request("GET", api_url, headers=headers)
+    response = requests.request('GET', api_url, headers=headers)
     json_results = response.json().get('results')
     for tenant in json_results:
         tenants[tenant['name']] = {
@@ -104,9 +104,9 @@ def get_tenants(url, headers):
 
 
 def add_tenant(url, headers, data, results):
-    """
+    '''
     Add new tenant
-    """
+    '''
     api_url = f'{url}/api/tenancy/tenants/'
     tenant = data.get('tenant')
     group_id = data.get('group_id')
@@ -120,14 +120,14 @@ def add_tenant(url, headers, data, results):
         slug = tenant.replace(' ', '-').lower()
     else:
         slug = tenant.lower()
-    payload = {"name": tenant, "slug": slug,
-               "group": group_id, "description": description,
-               "comments": comments, "tags": tags}
+    payload = {'name': tenant, 'slug': slug,
+               'group': group_id, 'description': description,
+               'comments': comments, 'tags': tags}
     response = requests.request(
-        "POST", api_url, data=json.dumps(payload), headers=headers)
+        'POST', api_url, data=json.dumps(payload), headers=headers)
     if response.status_code == 201:
         results.update(changed=True,
-                       msg=f"{tenant} successfully created!",
+                       msg=f'{tenant} successfully created!',
                        status_code=response.status_code
                        )
     else:
@@ -135,9 +135,9 @@ def add_tenant(url, headers, data, results):
 
 
 def update_tenant(url, headers, existing_tenants, data, results):
-    """
+    '''
     Update an existing tenant
-    """
+    '''
     changed = False
 
     # Define new values
@@ -161,40 +161,40 @@ def update_tenant(url, headers, existing_tenants, data, results):
     else:
         slug = tenant.lower()
 
-    payload = {"name": tenant, "slug": slug}
+    payload = {'name': tenant, 'slug': slug}
 
     if existing_description != description:
-        payload.update({"description": description})
+        payload.update({'description': description})
         changed = True
     if existing_comments != comments:
-        payload.update({"comments": comments})
+        payload.update({'comments': comments})
         changed = True
     if existing_tags != tags:
-        payload.update({"tags": tags})
+        payload.update({'tags': tags})
         changed = True
 
     response = requests.request(
-        "PATCH", api_url, data=json.dumps(payload), headers=headers)
+        'PATCH', api_url, data=json.dumps(payload), headers=headers)
     results.update(changed=changed,
-                   msg=f"{tenant} successfully updated!",
+                   msg=f'{tenant} successfully updated!',
                    status_code=response.status_code
                    )
 
 
 def delete_tenant(url, headers, existing_tenants, data, results):
-    """
+    '''
     Delete an existing tenant
-    """
+    '''
     tenant = data.get('tenant')
     tenant_id = existing_tenants[tenant].get('id')
 
     api_url = f'{url}/api/tenancy/tenants/{tenant_id}/'
 
     response = requests.request(
-        "DELETE", api_url, headers=headers)
+        'DELETE', api_url, headers=headers)
 
     if response.status_code == 204:
-        results.update(changed=True, msg=f"{tenant} successfully deleted!")
+        results.update(changed=True, msg=f'{tenant} successfully deleted!')
     else:
         results.update(changed=False, msg=response.status_code)
 
