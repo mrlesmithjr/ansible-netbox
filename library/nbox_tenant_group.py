@@ -70,18 +70,27 @@ def get_tenant_groups(url, headers):
     return tenant_groups
 
 
+def get_slug(name):
+    '''
+    Convert tenant group name to slug
+    '''
+    if '-' in name:
+        slug = name.replace(' ', '').lower()
+    elif ' ' in name:
+        slug = name.replace(' ', '-').lower()
+    else:
+        slug = name.lower()
+
+    return slug
+
+
 def add_tenant_group(url, headers, data, results):
     '''
     Add new tenant group
     '''
     api_url = f'{url}/api/tenancy/tenant-groups/'
     group = data.get('group')
-    if '-' in group:
-        slug = group.replace(' ', '').lower()
-    elif ' ' in group:
-        slug = group.replace(' ', '-').lower()
-    else:
-        slug = group.lower()
+    slug = get_slug(group)
 
     payload = {'name': group, 'slug': slug}
     response = requests.request(

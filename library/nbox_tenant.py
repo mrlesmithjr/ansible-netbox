@@ -103,6 +103,20 @@ def get_tenants(url, headers):
     return tenants
 
 
+def get_slug(name):
+    '''
+    Convert tenant name to slug
+    '''
+    if '-' in name:
+        slug = name.replace(' ', '').lower()
+    elif ' ' in name:
+        slug = name.replace(' ', '-').lower()
+    else:
+        slug = name.lower()
+
+    return slug
+
+
 def add_tenant(url, headers, data, results):
     '''
     Add new tenant
@@ -113,13 +127,7 @@ def add_tenant(url, headers, data, results):
     description = data.get('description')
     comments = data.get('comments')
     tags = data.get('tags')
-
-    if '-' in tenant:
-        slug = tenant.replace(' ', '').lower()
-    elif ' ' in tenant:
-        slug = tenant.replace(' ', '-').lower()
-    else:
-        slug = tenant.lower()
+    slug = get_slug(tenant)
     payload = {'name': tenant, 'slug': slug,
                'group': group_id, 'description': description,
                'comments': comments, 'tags': tags}
@@ -154,12 +162,7 @@ def update_tenant(url, headers, existing_tenants, data, results):
 
     api_url = f'{url}/api/tenancy/tenants/{tenant_id}/'
 
-    if '-' in tenant:
-        slug = tenant.replace(' ', '').lower()
-    elif ' ' in tenant:
-        slug = tenant.replace(' ', '-').lower()
-    else:
-        slug = tenant.lower()
+    slug = get_slug(tenant)
 
     payload = {'name': tenant, 'slug': slug}
 
