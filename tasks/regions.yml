@@ -1,0 +1,9 @@
+---
+- name: regions | Manage Region(s)
+  nbox_region:
+    name: "{{ item['name'] }}"
+    parent: "{{ item['parent']|default(omit) }}"
+    netbox_token: "{{ netbox_token }}"
+    netbox_url: "{{ netbox_url }}"
+    state: "{{ item['state']|default('present') }}"
+  loop: "{{ netbox_regions }}"

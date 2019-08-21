@@ -3,6 +3,75 @@
   connection: local
   gather_facts: false
   vars:
+    netbox_regions:
+      - name: US
+        state: present
+      - name: East
+        parent: US
+        state: present
+      - name: North Virginia
+        parent: East
+        state: present
+      - name: Ohio
+        parent: East
+        state: present
+      - name: West
+        parent: US
+        state: present
+      - name: North California
+        parent: West
+        state: present
+      - name: Oregon
+        parent: West
+        state: present
+      - name: Asia Pacific
+        state: present
+      - name: Hong Kong
+        parent: Asia Pacific
+        state: present
+      - name: Mumbai
+        parent: Asia Pacific
+        state: present
+      - name: Osaka-Local
+        parent: Asia Pacific
+        state: present
+      - name: Seoul
+        parent: Asia Pacific
+        state: present
+      - name: Singapore
+        parent: Asia Pacific
+        state: present
+      - name: Sydney
+        parent: Asia Pacific
+        state: present
+      - name: Tokyo
+        parent: Asia Pacific
+        state: present
+      - name: China
+        state: present
+      - name: Beijing
+        parent: China
+        state: present
+      - name: Ningxia
+        parent: China
+        state: present
+      - name: EU
+        state: present
+      - name: Frankfurt
+        parent: EU
+        state: present
+      - name: Ireland
+        parent: EU
+        state: present
+      - name: London
+        parent: EU
+        state: present
+      - name: Paris
+        parent: EU
+        state: present
+      - name: Stockholm
+        parent: EU
+        state: present
     netbox_tags:
       - name: Monitored
         color: 4caf50
@@ -44,6 +113,15 @@
     netbox_url: http://127.0.0.1:8080
 
   tasks:
+    - name: Manage Region(s)
+      nbox_region:
+        name: "{{ item['name'] }}"
+        parent: "{{ item['parent']|default(omit) }}"
+        netbox_token: "{{ netbox_token }}"
+        netbox_url: "{{ netbox_url }}"
+        state: "{{ item['state']|default('present') }}"
+      loop: "{{ netbox_regions }}"
+
     - name: Manage Tag(s)
       nbox_tag:
         color: "{{ item['color']|default(omit) }}"

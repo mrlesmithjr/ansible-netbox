@@ -73,6 +73,21 @@ netbox_token: null
 # Define url for NetBox API
 netbox_url: http://127.0.0.1:8080
 
+# Define regions
+netbox_regions:
+  []
+  # - name: US
+  #   state: present
+  # - name: East
+  #   parent: US
+  #   state: present
+  # - name: North Virginia
+  #   parent: East
+  #   state: present
+  # - name: Ohio
+  #   parent: East
+  #   state: present
+
 # Define tags
 netbox_tags:
   []
