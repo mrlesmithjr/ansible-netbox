@@ -71,6 +71,20 @@ def get_tags(url, headers):
     return tags
 
 
+def get_slug(name):
+    '''
+    Convert tag name to slug
+    '''
+    if '-' in name:
+        slug = name.replace(' ', '').lower()
+    elif ' ' in name:
+        slug = name.replace(' ', '-').lower()
+    else:
+        slug = name.lower()
+
+    return slug
+
+
 def add_tag(url, headers, data, results):
     '''
     Add a new tag
@@ -79,12 +93,7 @@ def add_tag(url, headers, data, results):
     color = data.get('color')
     comments = data.get('comments')
     api_url = f'{url}/api/extras/tags/'
-    if '-' in tag:
-        slug = tag.replace(' ', '').lower()
-    elif ' ' in tag:
-        slug = tag.replace(' ', '-').lower()
-    else:
-        slug = tag.lower()
+    slug = get_slug(tag)
 
     payload = {'name': tag, 'slug': slug, 'color': color, 'comments': comments}
     response = requests.request(
@@ -112,13 +121,7 @@ def update_tag(url, headers, existing_tags, data, results):
 
     tag_id = existing_tags[tag].get('id')
     api_url = f'{url}/api/extras/tags/{tag_id}/'
-
-    if '-' in tag:
-        slug = tag.replace(' ', '').lower()
-    elif ' ' in tag:
-        slug = tag.replace(' ', '-').lower()
-    else:
-        slug = tag.lower()
+    slug = get_slug(tag)
 
     payload = {'name': tag, 'slug': slug}
 
