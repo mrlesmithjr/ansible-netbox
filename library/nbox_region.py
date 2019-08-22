@@ -14,7 +14,7 @@ def main():
     '''
     argument_spec = dict(
         name=dict(type='str', required=True),
-        netbox_token=dict(type='str', required=True),
+        netbox_token=dict(type='str', required=True, no_log=True),
         netbox_url=dict(type='str', required=True),
         parent=dict(type='str', default=None),
         state=dict(type='str', default='present',
@@ -41,12 +41,14 @@ def main():
 
     if state == 'present':
         if region_lookup is None:
-            add_region(url, headers, data, existing_regions, results)
+            add_region(url, headers, data, existing_regions, results, module)
         else:
-            update_region(url, headers, data, existing_regions, results)
+            update_region(url, headers, data,
+                          existing_regions, results, module)
     else:
         if region_lookup is not None:
-            delete_region(url, headers, data, existing_regions, results)
+            delete_region(url, headers, data,
+                          existing_regions, results, module)
 
     module.exit_json(**results)
 
@@ -79,7 +81,7 @@ def get_slug(name):
     return slug
 
 
-def add_region(url, headers, data, existing_regions, results):
+def add_region(url, headers, data, existing_regions, results, module):
     '''
     Add new region
     '''
@@ -114,10 +116,10 @@ def add_region(url, headers, data, existing_regions, results):
                        status_code=response.status_code
                        )
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
-def update_region(url, headers, data, existing_regions, results):
+def update_region(url, headers, data, existing_regions, results, module):
     '''
     Update an existing region
     '''
@@ -159,10 +161,10 @@ def update_region(url, headers, data, existing_regions, results):
                            status_code=response.status_code
                            )
         else:
-            results.update(changed=False, msg=response.status_code)
+            module.fail_json(msg=response.text)
 
 
-def delete_region(url, headers, data, existing_regions, results):
+def delete_region(url, headers, data, existing_regions, results, module):
     '''
     Delete an existing region
     '''
@@ -176,7 +178,7 @@ def delete_region(url, headers, data, existing_regions, results):
                        status_code=response.status_code
                        )
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
 if __name__ == '__main__':

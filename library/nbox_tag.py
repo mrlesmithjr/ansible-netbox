@@ -16,7 +16,7 @@ def main():
         color=dict(type='str', default='9e9e9e'),
         comments=dict(type='str', default=''),
         name=dict(type='str', required=True),
-        netbox_token=dict(type='str', required=True),
+        netbox_token=dict(type='str', required=True, no_log=True),
         netbox_url=dict(type='str', required=True),
         state=dict(type='str', default='present',
                    choices=['absent', 'present'])
@@ -43,12 +43,12 @@ def main():
 
     if state == 'present':
         if tag not in existing_tags:
-            add_tag(url, headers, data, results)
+            add_tag(url, headers, data, results, module)
         else:
-            update_tag(url, headers, existing_tags, data, results)
+            update_tag(url, headers, existing_tags, data, results, module)
     else:
         if tag in existing_tags:
-            delete_tag(url, headers, existing_tags, data, results)
+            delete_tag(url, headers, existing_tags, data, results, module)
 
     module.exit_json(**results)
 
@@ -85,7 +85,7 @@ def get_slug(name):
     return slug
 
 
-def add_tag(url, headers, data, results):
+def add_tag(url, headers, data, results, module):
     '''
     Add a new tag
     '''
@@ -101,10 +101,10 @@ def add_tag(url, headers, data, results):
     if response.status_code == 201:
         results.update(changed=True, msg=f'{tag} successfully created!')
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
-def update_tag(url, headers, existing_tags, data, results):
+def update_tag(url, headers, existing_tags, data, results, module):
     '''
     Update an existing tag
     '''
@@ -135,13 +135,16 @@ def update_tag(url, headers, existing_tags, data, results):
 
     response = requests.request(
         'PATCH', api_url, data=json.dumps(payload), headers=headers)
-    results.update(changed=changed,
-                   msg=f'{tag} successfully updated!',
-                   status_code=response.status_code
-                   )
+    if response.status_code == 200:
+        results.update(changed=changed,
+                       msg=f'{tag} successfully updated!',
+                       status_code=response.status_code
+                       )
+    else:
+        module.fail_json(msg=response.text)
 
 
-def delete_tag(url, headers, existing_tags, data, results):
+def delete_tag(url, headers, existing_tags, data, results, module):
     '''
     Delete an existing tag
     '''
@@ -156,7 +159,7 @@ def delete_tag(url, headers, existing_tags, data, results):
     if response.status_code == 204:
         results.update(changed=True, msg=f'{tag} successfully deleted!')
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
 if __name__ == '__main__':

@@ -14,7 +14,7 @@ def main():
     '''
     argument_spec = dict(
         name=dict(type='str', required=True),
-        netbox_token=dict(type='str', required=True),
+        netbox_token=dict(type='str', required=True, no_log=True),
         netbox_url=dict(type='str', required=True),
         state=dict(type='str', default='present',
                    choices=['absent', 'present'])
@@ -38,12 +38,12 @@ def main():
 
     if state == 'present':
         if group not in existing_tenant_groups:
-            add_tenant_group(url, headers, data, results)
+            add_tenant_group(url, headers, data, results, module)
     else:
         if group in existing_tenant_groups:
             group_id = existing_tenant_groups[group].get('id')
             data.update({'group_id': group_id})
-            delete_tenant_group(url, headers, data, results)
+            delete_tenant_group(url, headers, data, results, module)
 
     module.exit_json(**results)
 
@@ -79,7 +79,7 @@ def get_slug(name):
     return slug
 
 
-def add_tenant_group(url, headers, data, results):
+def add_tenant_group(url, headers, data, results, module):
     '''
     Add new tenant group
     '''
@@ -93,10 +93,10 @@ def add_tenant_group(url, headers, data, results):
     if response.status_code == 201:
         results.update(changed=True, msg=f'{group} successfully created!')
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
-def delete_tenant_group(url, headers, data, results):
+def delete_tenant_group(url, headers, data, results, module):
     '''
     Delete existing tenant group
     '''
@@ -108,7 +108,7 @@ def delete_tenant_group(url, headers, data, results):
     if response.status_code == 204:
         results.update(changed=True, msg=f'{group} successfully deleted!')
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
 if __name__ == '__main__':
