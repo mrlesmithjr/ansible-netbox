@@ -88,6 +88,48 @@ netbox_regions:
   #   parent: East
   #   state: present
 
+# Define sites
+netbox_sites:
+  []
+  # - asn: 65001
+  #   comments: ""
+  #   contact_email: johndoe@example.org
+  #   contact_name: John Doe
+  #   contact_phone: 111-111-1111
+  #   custom_fields: {}
+  #   description: ""
+  #   facility: AT&T
+  #   # latitude: null
+  #   # longitude: null
+  #   name: ATT
+  #   physical_address: ""
+  #   region: East
+  #   shipping_address: ""
+  #   state: present
+  #   status: Active
+  #   tags: ["ATT", "Customer1"]
+  #   tenant: Customer1
+  #   time_zone: US/Eastern
+  # - asn: 65002
+  #   comments: ""
+  #   contact_email: janedoe@example.org
+  #   contact_name: Jane Doe
+  #   contact_phone: 222-222-2222
+  #   custom_fields: {}
+  #   description: ""
+  #   facility: QTS
+  #   # latitude: null
+  #   # longitude: null
+  #   name: QTS
+  #   physical_address: ""
+  #   region: East
+  #   shipping_address: ""
+  #   state: present
+  #   status: Retired
+  #   tags: ["QTS", "Customer2"]
+  #   tenant: Customer2
+  #   time_zone: US/Eastern
+
 # Define tags
 netbox_tags:
   []
