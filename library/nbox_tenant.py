@@ -18,7 +18,7 @@ def main():
         description=dict(type='str', default=''),
         group=dict(type='str', default=None),
         name=dict(type='str', required=True),
-        netbox_token=dict(type='str', required=True),
+        netbox_token=dict(type='str', required=True, no_log=True),
         netbox_url=dict(type='str', required=True),
         state=dict(type='str', default='present',
                    choices=['absent', 'present']),
@@ -54,14 +54,16 @@ def main():
             group_id = existing_tenant_groups[group].get('id')
             data.update({'group_id': group_id})
             if tenant not in existing_tenants:
-                add_tenant(url, headers, data, results)
+                add_tenant(url, headers, data, results, module)
             else:
                 # tenant_id = existing_tenants[tenant].get('id')
                 # data.update({'tenant_id': tenant_id})
-                update_tenant(url, headers, existing_tenants, data, results)
+                update_tenant(url, headers, existing_tenants,
+                              data, results, module)
     else:
         if tenant in existing_tenants:
-            delete_tenant(url, headers, existing_tenants, data, results)
+            delete_tenant(url, headers, existing_tenants,
+                          data, results, module)
 
     module.exit_json(**results)
 
@@ -117,7 +119,7 @@ def get_slug(name):
     return slug
 
 
-def add_tenant(url, headers, data, results):
+def add_tenant(url, headers, data, results, module):
     '''
     Add new tenant
     '''
@@ -139,10 +141,10 @@ def add_tenant(url, headers, data, results):
                        status_code=response.status_code
                        )
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
-def update_tenant(url, headers, existing_tenants, data, results):
+def update_tenant(url, headers, existing_tenants, data, results, module):
     '''
     Update an existing tenant
     '''
@@ -178,13 +180,16 @@ def update_tenant(url, headers, existing_tenants, data, results):
 
     response = requests.request(
         'PATCH', api_url, data=json.dumps(payload), headers=headers)
-    results.update(changed=changed,
-                   msg=f'{tenant} successfully updated!',
-                   status_code=response.status_code
-                   )
+    if response.status_code == 200:
+        results.update(changed=changed,
+                       msg=f'{tenant} successfully updated!',
+                       status_code=response.status_code
+                       )
+    else:
+        module.fail_json(msg=response.text)
 
 
-def delete_tenant(url, headers, existing_tenants, data, results):
+def delete_tenant(url, headers, existing_tenants, data, results, module):
     '''
     Delete an existing tenant
     '''
@@ -199,7 +204,7 @@ def delete_tenant(url, headers, existing_tenants, data, results):
     if response.status_code == 204:
         results.update(changed=True, msg=f'{tenant} successfully deleted!')
     else:
-        results.update(changed=False, msg=response.status_code)
+        module.fail_json(msg=response.text)
 
 
 if __name__ == '__main__':
