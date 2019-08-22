@@ -54,6 +54,7 @@ def main():
     data['netbox_tenant_groups'] = get_tenant_groups(url, headers)
     data['netbox_tenants'] = get_tenants(url, headers)
     data['netbox_sites'] = get_sites(url, headers)
+    data['netbox_vrfs'] = get_vrfs(url, headers)
 
     if args.format == 'json':
         print(json.dumps(data))
@@ -94,9 +95,9 @@ def get_tags(url, headers):
     tags = []
     for tag in all_tags:
         tag_info = dict()
-        tag_info['name'] = tag['name']
         tag_info['color'] = tag['color']
         tag_info['comments'] = tag['comments']
+        tag_info['name'] = tag['name']
         tag_info['state'] = 'present'
         tags.append(tag_info)
 
@@ -145,7 +146,7 @@ def get_tenants(url, headers):
 
 def get_sites(url, headers):
     '''
-    Get dictionary existing sites
+    Get dictionary of existing sites
     '''
     api_url = f'{url}/api/dcim/sites/'
     response = requests.request('GET', api_url, headers=headers)
@@ -182,6 +183,31 @@ def get_sites(url, headers):
         sites.append(site_info)
 
     return sites
+
+
+def get_vrfs(url, headers):
+    '''
+    Get dictionary of existing VRFs
+    '''
+    vrfs = []
+    api_url = f'{url}/api/ipam/vrfs/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_vrfs = response.json()['results']
+    for vrf in all_vrfs:
+        vrf_info = dict()
+        vrf_info['custom_fields'] = vrf['custom_fields']
+        vrf_info['description'] = vrf['description']
+        vrf_info['enforce_unique'] = bool(vrf['enforce_unique'])
+        vrf_info['name'] = vrf['name']
+        vrf_info['rd'] = vrf['rd']
+        vrf_info['tags'] = vrf['tags']
+        if vrf['tenant'] is not None:
+            vrf_info['tenant'] = vrf['tenant']['name']
+        else:
+            vrf_info['tenant'] = None
+        vrfs.append(vrf_info)
+
+    return vrfs
 
 
 if __name__ == '__main__':
