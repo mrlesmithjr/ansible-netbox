@@ -36,16 +36,11 @@ def main():
 
     existing_tenant_groups = get_tenant_groups(url, headers)
 
-    if group not in existing_tenant_groups:
-        if state == 'present':
+    if state == 'present':
+        if group not in existing_tenant_groups:
             add_tenant_group(url, headers, data, results)
-        else:
-            results.update(msg=f'{group} already deleted!')
-
     else:
-        if state == 'present':
-            results.update({'msg': f'{group} already exists!'})
-        else:
+        if group in existing_tenant_groups:
             group_id = existing_tenant_groups[group].get('id')
             data.update({'group_id': group_id})
             delete_tenant_group(url, headers, data, results)
