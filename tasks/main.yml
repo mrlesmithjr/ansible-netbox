@@ -10,3 +10,5 @@
 - include: tenant_groups.yml
 
 - include: tenants.yml
+
+- include: sites.yml
