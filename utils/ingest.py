@@ -200,6 +200,7 @@ def get_vrfs(url, headers):
         vrf_info['enforce_unique'] = bool(vrf['enforce_unique'])
         vrf_info['name'] = vrf['name']
         vrf_info['rd'] = vrf['rd']
+        vrf_info['state'] = 'present'
         vrf_info['tags'] = vrf['tags']
         if vrf['tenant'] is not None:
             vrf_info['tenant'] = vrf['tenant']['name']

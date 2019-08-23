@@ -12,3 +12,5 @@
 - include: tenants.yml
 
 - include: sites.yml
+
+- include: vrfs.yml

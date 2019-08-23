@@ -1,0 +1,14 @@
+---
+- name: vrfs | Manage VRF(s)
+  nbox_vrf:
+    custom_fields: "{{ item['custom_fields']|default(omit) }}"
+    description: "{{ item['description']|default(omit) }}"
+    enforce_unique: "{{ item['enforce_unique']|default(omit) }}"
+    name: "{{ item['name'] }}"
+    netbox_token: "{{ netbox_token }}"
+    netbox_url: "{{ netbox_url }}"
+    rd: "{{ item['rd']|default(omit) }}"
+    state: "{{ item['state']|default('present') }}"
+    tags: "{{ item['tags']|default(omit) }}"
+    tenant: "{{ item['tenant']|default(omit) }}"
+  loop: "{{ netbox_vrfs }}"
