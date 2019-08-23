@@ -56,6 +56,8 @@ def main():
     data['netbox_sites'] = get_sites(url, headers)
     data['netbox_vrfs'] = get_vrfs(url, headers)
     data['netbox_vlans'] = get_vlans(url, headers)
+    data['netbox_rirs'] = get_rirs(url, headers)
+    data['netbox_aggregates'] = get_aggregates(url, headers)
 
     if args.format == 'json':
         print(json.dumps(data))
@@ -240,7 +242,50 @@ def get_vlans(url, headers):
             vlan_info['tenant'] = None
         vlan_info['vid'] = vlan['vid']
         vlans.append(vlan_info)
+
     return vlans
+
+
+def get_rirs(url, headers):
+    '''
+    Get dictionary of existing rirs
+    '''
+    api_url = f'{url}/api/ipam/rirs/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_rirs = response.json()['results']
+    rirs = []
+    for rir in all_rirs:
+        rir_info = dict()
+        rir_info['is_private'] = bool(rir['is_private'])
+        rir_info['name'] = rir['name']
+        rir_info['state'] = 'present'
+        rirs.append(rir_info)
+
+    return rirs
+
+
+def get_aggregates(url, headers):
+    '''
+    Get dictionary of existing aggregates
+    '''
+    api_url = f'{url}/api/ipam/aggregates/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_aggs = response.json()['results']
+    aggs = []
+    for agg in all_aggs:
+        agg_info = dict()
+        agg_info['custom_fields'] = agg['custom_fields']
+        agg_info['description'] = agg['description']
+        agg_info['prefix'] = agg['prefix']
+        if agg['rir'] is not None:
+            agg_info['rir'] = agg['rir']['name']
+        else:
+            agg_info['rir'] = None
+        agg_info['state'] = 'present'
+        agg_info['tags'] = agg['tags']
+        aggs.append(agg_info)
+
+    return aggs
 
 
 if __name__ == '__main__':
