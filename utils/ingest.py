@@ -58,6 +58,8 @@ def main():
     data['netbox_vlans'] = get_vlans(url, headers)
     data['netbox_rirs'] = get_rirs(url, headers)
     data['netbox_aggregates'] = get_aggregates(url, headers)
+    data['netbox_prefixes'] = get_prefixes(url, headers)
+    data['netbox_devices'] = get_devices(url, headers)
 
     if args.format == 'json':
         print(json.dumps(data))
@@ -286,6 +288,79 @@ def get_aggregates(url, headers):
         aggs.append(agg_info)
 
     return aggs
+
+
+def get_prefixes(url, headers):
+    '''
+    Get dictionary of existing prefixes
+    '''
+    api_url = f'{url}/api/ipam/prefixes/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_prefixes = response.json()['results']
+    prefixes = []
+    for prefix in all_prefixes:
+        prefix_info = dict()
+        prefix_info['custom_fields'] = prefix['custom_fields']
+        prefix_info['description'] = prefix['description']
+        prefix_info['is_pool'] = bool(prefix['is_pool'])
+        prefix_info['prefix'] = prefix['prefix']
+        prefix_info['role'] = prefix['role']
+        if prefix['site'] is not None:
+            prefix_info['site'] = prefix['site']['name']
+        else:
+            prefix_info['site'] = None
+        prefix_info['state'] = 'present'
+        prefix_info['status'] = prefix['status']['label']
+        prefix_info['tags'] = prefix['tags']
+        if prefix['tenant'] is not None:
+            prefix_info['tenant'] = prefix['tenant']['name']
+        else:
+            prefix_info['tenant'] = None
+        prefix_info['vlan'] = prefix['vlan']
+        if prefix['vrf'] is not None:
+            prefix_info['vrf'] = prefix['vrf']['name']
+        else:
+            prefix['vrf'] = None
+        prefixes.append(prefix_info)
+
+    return prefixes
+
+
+def get_devices(url, headers):
+    '''
+    Get dictionary of existing devices
+    '''
+    devices = []
+    api_url = f'{url}/api/dcim/devices/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_devices = response.json()['results']
+    for device in all_devices:
+        device_info = dict()
+        device_info['asset_tag'] = device['asset_tag']
+        device_info['cluster'] = device['cluster']
+        device_info['comments'] = device['comments']
+        device_info['custom_fields'] = device['custom_fields']
+        device_info['device_role'] = device['device_role']
+        device_info['device_type'] = device['device_type']
+        device_info['local_context_data'] = device['local_context_data']
+        device_info['name'] = device['name']
+        device_info['primary_ip4'] = device['primary_ip4']
+        device_info['primary_ip6'] = device['primary_ip6']
+        device_info['serial'] = device['serial']
+        if device['site'] is not None:
+            device_info['site'] = device['site']['name']
+        else:
+            device_info['site'] = None
+        device_info['state'] = 'present'
+        device_info['status'] = device['status']['label']
+        device_info['tags'] = device['tags']
+        if device['tenant'] is not None:
+            device_info['tenant'] = device['tenant']['name']
+        else:
+            device_info['tenant'] = None
+        devices.append(device_info)
+
+    return devices
 
 
 if __name__ == '__main__':
