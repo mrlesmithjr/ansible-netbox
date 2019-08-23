@@ -55,6 +55,7 @@ def main():
     data['netbox_tenants'] = get_tenants(url, headers)
     data['netbox_sites'] = get_sites(url, headers)
     data['netbox_vrfs'] = get_vrfs(url, headers)
+    data['netbox_vlans'] = get_vlans(url, headers)
 
     if args.format == 'json':
         print(json.dumps(data))
@@ -209,6 +210,37 @@ def get_vrfs(url, headers):
         vrfs.append(vrf_info)
 
     return vrfs
+
+
+def get_vlans(url, headers):
+    '''
+    Get dictionary of existing VRFs
+    '''
+    vlans = []
+    api_url = f'{url}/api/ipam/vlans/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_vlans = response.json()['results']
+    for vlan in all_vlans:
+        vlan_info = dict()
+        vlan_info['custom_fields'] = vlan['custom_fields']
+        vlan_info['description'] = vlan['description']
+        vlan_info['group'] = vlan['group']
+        vlan_info['name'] = vlan['name']
+        vlan_info['role'] = vlan['role']
+        if vlan['site'] is not None:
+            vlan_info['site'] = vlan['site']['name']
+        else:
+            vlan_info['site'] = None
+        vlan_info['state'] = 'present'
+        vlan_info['status'] = vlan['status']['label']
+        vlan_info['tags'] = vlan['tags']
+        if vlan['tenant'] is not None:
+            vlan_info['tenant'] = vlan['tenant']['name']
+        else:
+            vlan_info['tenant'] = None
+        vlan_info['vid'] = vlan['vid']
+        vlans.append(vlan_info)
+    return vlans
 
 
 if __name__ == '__main__':
