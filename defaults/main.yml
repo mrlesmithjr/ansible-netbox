@@ -174,3 +174,25 @@ netbox_tenants:
   #   comments: Customer 2 Tenant
   #   tags:
   #     - Monitored
+
+# Define vrfs
+netbox_vrfs:
+  []
+  # - custom_fields: {}
+  #   description: Customer1 VRF
+  #   enforce_unique: true
+  #   name: Customer1 VRF
+  #   rd: Customer1-rd
+  #   state: present
+  #   tags:
+  #     - Customer1
+  #   tenant: Customer1
+  # - custom_fields: {}
+  #   description: Customer2 VRF
+  #   enforce_unique: true
+  #   name: Customer2 VRF
+  #   rd: Customer2-rd
+  #   state: present
+  #   tags:
+  #     - Customer2
+  #   tenant: Customer2
