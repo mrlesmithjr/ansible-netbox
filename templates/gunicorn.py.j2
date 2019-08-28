@@ -2,4 +2,4 @@ command = '{{ netbox_virtualenv + '/bin/gunicorn' }}'
 pythonpath = '{{ netbox_virtualenv + '/bin' }}'
 bind = '127.0.0.1:8001'
 workers = 3
-user = 'www-data'
+user = '{{ netbox_nginx_user }}'

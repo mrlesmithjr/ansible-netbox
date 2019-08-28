@@ -1,0 +1,39 @@
+---
+- name: centos | Enabling EPEL
+  yum:
+    name: epel-release
+    state: present
+  become: true
+  register: result
+  until: result is successful
+
+- name: centos | Installing Pre-Reqs
+  yum:
+    name: "{{ netbox_centos_pre_reqs }}"
+    state: present
+  become: true
+  register: result
+  until: result is successful
+
+- name: centos | Configuring Postgresql pg_hba.conf
+  replace:
+    path: /var/lib/pgsql/9.6/data/pg_hba.conf
+    regexp: ident
+    replace: md5
+  become: true
+  register: _pg_configured
+
+- name: centos | Restarting Postgresql Service
+  service:
+    name: postgresql-9.6
+    state: restarted
+  become: true
+  when:
+    - _pg_configured['changed']
+
+- name: centos | Ensuring Redis Service Is Enabled and Started
+  service:
+    name: redis
+    state: started
+    enabled: true
+  become: true

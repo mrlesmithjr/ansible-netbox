@@ -1,0 +1,20 @@
+---
+- name: set_facts | Setting Debian Facts
+  set_fact:
+    netbox_nginx_site_conf: /etc/nginx/sites-available/netbox
+    netbox_nginx_user: www-data
+    netbox_supervisor_conf: netbox.conf
+    netbox_supervisor_conf_dir: /etc/supervisor/conf.d
+    netbox_supervisor_service: supervisor
+  when:
+    - ansible_os_family == "Debian"
+
+- name: set_facts | Setting RedHat Facts
+  set_fact:
+    netbox_nginx_site_conf: /etc/nginx/conf.d/netbox.conf
+    netbox_nginx_user: nginx
+    netbox_supervisor_conf: netbox.ini
+    netbox_supervisor_conf_dir: /etc/supervisord.d
+    netbox_supervisor_service: supervisord
+  when:
+    - ansible_os_family == "RedHat"

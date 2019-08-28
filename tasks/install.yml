@@ -95,11 +95,21 @@
   become: true
   notify:
     - restart nginx
+  when: ansible_os_family == "Debian"
+
+- name: install | Removing NGINX Default Site
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  become: true
+  notify:
+    - restart nginx
+  when: ansible_os_family == "RedHat"
 
 - name: install | Configuring Netbox NGINX Site
   template:
     src: netbox.nginx.conf.j2
-    dest: /etc/nginx/sites-available/netbox
+    dest: "{{ netbox_nginx_site_conf }}"
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
   become: true
@@ -108,7 +118,7 @@
 
 - name: install | Creating Symlink For Netbox Site
   file:
-    src: /etc/nginx/sites-available/netbox
+    src: "{{ netbox_nginx_site_conf }}"
     dest: /etc/nginx/sites-enabled/netbox
     owner: "{{ netbox_user }}"
     group: "{{ netbox_group }}"
@@ -116,6 +126,7 @@
   become: true
   notify:
     - restart nginx
+  when: ansible_os_family == "Debian"
 
 - name: install | Configuring gunicorn
   template:
@@ -125,12 +136,12 @@
     group: "{{ netbox_group }}"
   become: true
   notify:
-    - restart supervisor
+    - "restart {{ netbox_supervisor_service }}"
 
 - name: install | Configuring supervisord
   template:
     src: supervisor.netbox.conf.j2
-    dest: /etc/supervisor/conf.d/netbox.conf
+    dest: "{{ netbox_supervisor_conf_dir + '/' + netbox_supervisor_conf }}"
   become: true
   notify:
-    - restart supervisor
+    - "restart {{ netbox_supervisor_service }}"

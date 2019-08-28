@@ -6,6 +6,21 @@ netbox_db_password: netbox
 netbox_db_user: netbox
 netbox_db: netbox
 
+netbox_centos_pre_reqs:
+  - gcc
+  - graphviz
+  - libffi-devel
+  - libxml2-devel
+  - libxslt-devel
+  - nginx
+  - openssl-devel
+  - python36
+  - python36-devel
+  - python36-setuptools
+  - redhat-rpm-config
+  - redis
+  - supervisor
+
 netbox_debian_pre_reqs:
   - build-essential
   - graphviz

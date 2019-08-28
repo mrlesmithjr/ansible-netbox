@@ -13,3 +13,10 @@
     state: restarted
     enabled: true
   become: true
+
+- name: restart supervisord
+  service:
+    name: supervisord
+    state: restarted
+    enabled: true
+  become: true
