@@ -175,6 +175,19 @@ netbox_tenants:
   #   tags:
   #     - Monitored
 
+# Define VLAN groups
+netbox_vlan_groups:
+  []
+  # - name: ATT-VLAN-GROUP
+  #   site: ATT
+  #   state: present
+  # - name: QTS-VLAN-GROUP
+  #   site: QTS
+  #   state: present
+  # - name: TEST-VLAN-GROUP
+  #   # site: null
+  #   state: present
+
 # Define vrfs
 netbox_vrfs:
   []

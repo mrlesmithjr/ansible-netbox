@@ -1,0 +1,9 @@
+---
+- name: vlan_groups | Manage VLAN Group(s)
+  nbox_vlan_group:
+    name: "{{ item['name'] }}"
+    netbox_token: "{{ netbox_token }}"
+    netbox_url: "{{ netbox_url }}"
+    site: "{{ item['site']|default(omit) }}"
+    state: "{{ item['state']|default('present') }}"
+  loop: "{{ netbox_vlan_groups }}"
