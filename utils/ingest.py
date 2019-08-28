@@ -55,6 +55,8 @@ def main():
     data['netbox_tenants'] = get_tenants(url, headers)
     data['netbox_sites'] = get_sites(url, headers)
     data['netbox_vrfs'] = get_vrfs(url, headers)
+    data['netbox_roles'] = get_roles(url, headers)
+    data['netbox_vlan_groups'] = get_vlan_groups(url, headers)
     data['netbox_vlans'] = get_vlans(url, headers)
     data['netbox_rirs'] = get_rirs(url, headers)
     data['netbox_aggregates'] = get_aggregates(url, headers)
@@ -216,6 +218,27 @@ def get_vrfs(url, headers):
     return vrfs
 
 
+def get_vlan_groups(url, headers):
+    '''
+    Get dictionary of existing vlan groups
+    '''
+    vlan_groups = []
+    api_url = f'{url}/api/ipam/vlan-groups/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_vlan_groups = response.json()['results']
+    for vlan_group in all_vlan_groups:
+        vlan_group_info = dict()
+        vlan_group_info['name'] = vlan_group['name']
+        vlan_group_info['state'] = 'present'
+        if vlan_group['site'] is not None:
+            vlan_group_info['site'] = vlan_group['site']['name']
+        else:
+            vlan_group_info['site'] = None
+        vlan_groups.append(vlan_group_info)
+
+    return vlan_groups
+
+
 def get_vlans(url, headers):
     '''
     Get dictionary of existing VRFs
@@ -288,6 +311,23 @@ def get_aggregates(url, headers):
         aggs.append(agg_info)
 
     return aggs
+
+
+def get_roles(url, headers):
+    '''
+    Get dictionary of existing IPAM roles
+    '''
+    api_url = f'{url}/api/ipam/roles/'
+    response = requests.request('GET', api_url, headers=headers)
+    all_roles = response.json()['results']
+    roles = []
+    for role in all_roles:
+        role_info = dict()
+        role_info['name'] = role['name']
+        role_info['state'] = 'present'
+        roles.append(role_info)
+
+    return roles
 
 
 def get_prefixes(url, headers):
