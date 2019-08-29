@@ -55,7 +55,7 @@ def main():
     data['netbox_tenants'] = get_tenants(url, headers)
     data['netbox_sites'] = get_sites(url, headers)
     data['netbox_vrfs'] = get_vrfs(url, headers)
-    data['netbox_roles'] = get_roles(url, headers)
+    data['netbox_ipam_roles'] = get_ipam_roles(url, headers)
     data['netbox_vlan_groups'] = get_vlan_groups(url, headers)
     data['netbox_vlans'] = get_vlans(url, headers)
     data['netbox_rirs'] = get_rirs(url, headers)
@@ -313,7 +313,7 @@ def get_aggregates(url, headers):
     return aggs
 
 
-def get_roles(url, headers):
+def get_ipam_roles(url, headers):
     '''
     Get dictionary of existing IPAM roles
     '''
