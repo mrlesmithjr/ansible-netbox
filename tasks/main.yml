@@ -15,4 +15,6 @@
 
 - include_tasks: vrfs.yml
 
+- include_tasks: ipam_roles.yml
+
 - include_tasks: vlan_groups.yml

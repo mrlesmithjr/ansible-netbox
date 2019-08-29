@@ -175,6 +175,19 @@ netbox_tenants:
   #   tags:
   #     - Monitored
 
+# Define IPAM roles
+netbox_ipam_roles:
+  []
+  # - name: Production
+  #   state: present
+  #   weight: 1000
+  # - name: Development
+  #   state: present
+  #   weight: 1000
+  # - name: UAT
+  #   state: present
+  #   weight: 1000
+
 # Define VLAN groups
 netbox_vlan_groups:
   []

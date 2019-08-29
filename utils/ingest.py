@@ -325,6 +325,7 @@ def get_ipam_roles(url, headers):
         role_info = dict()
         role_info['name'] = role['name']
         role_info['state'] = 'present'
+        role_info['weight'] = role['weight']
         roles.append(role_info)
 
     return roles

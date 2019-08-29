@@ -1,0 +1,9 @@
+---
+- name: ipam_roles | Manage IPAM Role(s)
+  nbox_ipam_role:
+    name: "{{ item['name'] }}"
+    netbox_token: "{{ netbox_token }}"
+    netbox_url: "{{ netbox_url }}"
+    state: "{{ item['state']|default('present') }}"
+    weight: "{{ item['weight']|default(omit) }}"
+  loop: "{{ netbox_ipam_roles }}"
