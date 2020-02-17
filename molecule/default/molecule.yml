@@ -23,12 +23,17 @@ platforms:
   #   image: debian:10
   - name: ubuntu1604
     image: ubuntu:16.04
+    privileged: true
+    command: /lib/systemd/systemd
   - name: ubuntu1804
     image: ubuntu:18.04
 provisioner:
   name: ansible
   lint:
     name: ansible-lint
+    options:
+      x:
+        - 306
   playbooks:
     converge: ../shared/playbook.yml
 verifier:
