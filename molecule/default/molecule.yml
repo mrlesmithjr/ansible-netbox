@@ -27,6 +27,8 @@ platforms:
     command: /lib/systemd/systemd
   - name: ubuntu1804
     image: ubuntu:18.04
+    privileged: true
+    command: /lib/systemd/systemd
 provisioner:
   name: ansible
   lint:
