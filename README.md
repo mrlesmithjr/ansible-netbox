@@ -1,9 +1,10 @@
 # ansible-netbox
 
-An Ansible role to install/configure [Netbox](https://github.com/digitalocean/netbox)
+Ansible role to install/configure NetBox
 
 ## Requirements
 
+For any required Ansible roles, review:
 [requirements.yml](requirements.yml)
 
 ## Role Variables
@@ -24,6 +25,6 @@ MIT
 
 Larry Smith Jr.
 
-- [@mrlesmithjr](https://www.twitter.com/mrlesmithjr)
-- [EverythingShouldBeVirtual](http://everythingshouldbevirtual.com)
+- [@mrlesmithjr](https://twitter.com/mrlesmithjr)
 - [mrlesmithjr@gmail.com](mailto:mrlesmithjr@gmail.com)
+- [http://everythingshouldbevirtual.com](http://everythingshouldbevirtual.com)
