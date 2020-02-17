@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Larry Smith Jr.
-  description: An Ansible role to install/configure NetBox
+  description: Ansible role to install/configure NetBox
   license: MIT
 
   min_ansible_version: 2.4

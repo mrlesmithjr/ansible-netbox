@@ -8,14 +8,14 @@ driver:
 lint:
   name: yamllint
 platforms:
-  - name: centos7
-    box: mrlesmithjr/centos7
-  - name: centos8
-    box: mrlesmithjr/centos8
-  - name: debian9
-    box: mrlesmithjr/stretch64
-  - name: debian10
-    box: mrlesmithjr/buster64
+  # - name: centos7
+  #   box: mrlesmithjr/centos7
+  # - name: centos8
+  #   box: mrlesmithjr/centos8
+  # - name: debian9
+  #   box: mrlesmithjr/stretch64
+  # - name: debian10
+  #   box: mrlesmithjr/buster64
   - name: ubuntu1604
     box: mrlesmithjr/xenial64
   - name: ubuntu1804
