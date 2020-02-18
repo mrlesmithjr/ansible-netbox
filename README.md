@@ -2,6 +2,16 @@
 
 Ansible role to install/configure NetBox
 
+## Build Status
+
+### GitHub Actions
+
+![Molecule Test](https://github.com/mrlesmithjr/ansible-netbox/workflows/Molecule%20Test/badge.svg)
+
+### Travis CI
+
+[![Build Status](https://travis-ci.org/mrlesmithjr/ansible-netbox.svg?branch=master)](https://travis-ci.org/mrlesmithjr/ansible-netbox)
+
 ## Requirements
 
 For any required Ansible roles, review:
