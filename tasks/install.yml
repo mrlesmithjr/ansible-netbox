@@ -68,7 +68,7 @@
     ansible_ssh_pipelining: true
 
 # https://github.com/lae/ansible-role-netbox/blob/master/tasks/deploy_netbox.yml
-- name: install | Create a super user for NetBox
+- name: install | Create a super user for NetBox # noqa 306
   shell: "printf '{{ netbox_superuser_script }}' |\
     {{ netbox_virtualenv + '/bin/python' + ' ' + netbox_app_path + '/manage.py shell' }}"
   register: _netbox_superuser_result
