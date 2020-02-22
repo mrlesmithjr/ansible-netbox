@@ -12,6 +12,9 @@
         state: present
     pri_domain_name: test.vagrant.local
   tasks:
+    - name: Include ansible-bootstrap-python
+      include_role:
+        name: ansible-bootstrap-python
     - name: Include ansible-postgresql
       include_role:
         name: ansible-postgresql
