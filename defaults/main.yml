@@ -27,6 +27,9 @@ netbox_group: netbox
 netbox_home: "{{ netbox_install_dir + '/netbox' }}"
 netbox_install_dir: /opt
 
+netbox_listen_address: 127.0.0.1
+netbox_listen_port: 8001
+
 # Expose Prometheus monitoring metrics at the HTTP endpoint '/metrics'
 netbox_metrics_enabled: false
 

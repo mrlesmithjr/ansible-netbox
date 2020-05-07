@@ -1,5 +1,5 @@
 command = '{{ netbox_virtualenv + '/bin/gunicorn' }}'
 pythonpath = '{{ netbox_virtualenv + '/bin' }}'
-bind = '127.0.0.1:8001'
+bind = '{{ netbox_listen_address+':'+netbox_listen_port|string }}'
 workers = 3
 user = 'www-data'

@@ -1,3 +1,39 @@
+commit 63888d98619f8dc6ee618baa726d9b35399b4af7
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 15:43:21 2020 -0400
+
+    Disabled Debian9/Ubuntu16.04 testing
+
+commit f39be44da62466f6b4757d4d3efed6d39c86815b
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 12:44:21 2020 -0400
+
+    Added missing exposed ports
+
+commit d9d6926dd85b0900848fffe7e1ba581c655e2d13
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 12:32:52 2020 -0400
+
+    Updated Python requirements
+
+commit 9ad0f5f0080e9a6e43073264f749fb4640b4fe6b
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 12:32:40 2020 -0400
+
+    Fixed linting issue
+
+commit 2d813a2426a57f658db4e86b8a932b5bb4fd06bf
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 12:24:33 2020 -0400
+
+    UGGGG!!!! SO, SO many changes
+    
+    - Cleaned up linting issues
+    - Added real testing for custom modules
+    - Updated Netbox version
+    - Updated configuration to account for new Netbox version
+    - etc, etc
+
 commit a7a773b883dea207800a6b97fe2ff21dbf73404a
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Tue Feb 18 16:51:43 2020 -0500
