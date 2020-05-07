@@ -6,11 +6,13 @@ Script to ingest existing NetBox data
 #
 # This file is a module for ingest existing NetBox data
 
+# pylint: disable=line-too-long
+
 #
 # Module usage:
-# python utils/ingest.py --token yourusersapitoken --url http(s)//:iporhostnameurl:port
+# python utils/ingest.py --token yourusersapitoken --url http(s)//:iporhostnameurl:port # noqa E501
 # Example:
-# python utils/ingest.py --token 4f552cc2e8c3b76d9613a591e3adb58984a19a6f --url http://127.0.0.1:8080
+# python utils/ingest.py --token 4f552cc2e8c3b76d9613a591e3adb58984a19a6f --url http://127.0.0.1:8080 # noqa E501
 #
 
 
