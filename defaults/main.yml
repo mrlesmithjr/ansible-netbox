@@ -47,10 +47,13 @@ netbox_superuser_email: "netbox@{{ netbox_pri_domain }}"
 netbox_superuser_script: |
   from django.contrib.auth.models import User
   from base64 import b64decode
+  from users.models import Token
   password = b64decode("{{ netbox_superuser_password | b64encode }}").decode("UTF-8")
   query = User.objects.filter(username="{{ netbox_superuser_username }}")
   if not query.exists():
     User.objects.create_superuser("{{ netbox_superuser_username }}", "{{ netbox_superuser_email }}", password)
+    user = User.objects.get(username="{{ netbox_superuser_username }}")
+    Token.objects.create(user=user, key="{{ netbox_token }}")
     print("changed")
   else:
     user = User.objects.get(username="{{ netbox_superuser_username }}")
@@ -63,12 +66,12 @@ netbox_superuser_script: |
       print("changed")
 
 netbox_user: netbox
-netbox_version: 2.6.2
+netbox_version: 2.8.3
 netbox_virtualenv: "{{ netbox_home + '/venv' }}"
 
 ### Everything below is based on custom module(s)
 # Define your user token
-netbox_token: null
+netbox_token: 0123456789abcdef0123456789abcdef01234567
 
 # Define url for NetBox API
 netbox_url: http://127.0.0.1:8080

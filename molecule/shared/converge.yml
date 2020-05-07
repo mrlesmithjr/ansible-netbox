@@ -1,17 +1,12 @@
 ---
 - name: Converge
   hosts: all
-  vars:
-    postgresql_dbs:
-      - name: netbox
-        state: present
-    postgresql_users:
-      - name: netbox
-        db: netbox
-        password: netbox
-        state: present
-    pri_domain_name: test.vagrant.local
   tasks:
+    - name: Update APT Cache
+      apt:
+        update_cache: true
+      become: true
+      when: ansible_os_family == "Debian"
     - name: Include ansible-bootstrap-python
       include_role:
         name: ansible-bootstrap-python

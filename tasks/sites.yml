@@ -23,3 +23,5 @@
     tenant: "{{ item['tenant']|default(omit) }}"
     time_zone: "{{ item['time_zone']|default(omit) }}"
   loop: "{{ netbox_sites }}"
+  delegate_to: localhost
+  retries: 5

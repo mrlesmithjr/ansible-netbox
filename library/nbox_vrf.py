@@ -1,11 +1,16 @@
 #!/usr/bin/env python
+
+"""library/nbox_vrf.py"""
+
 # (c) 2019, Larry Smith Jr. <mrlesmithjr@gmail.com>
 #
 # This file is a module for managing NetBox vrfs
 
-from ansible.module_utils.basic import *
+# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import,too-many-locals # noqa E501
+
 import json
 import requests
+from ansible.module_utils.basic import *  # noqa F403
 
 
 def main():
@@ -25,7 +30,7 @@ def main():
         tags=dict(type='list', default=[]),
         tenant=dict(type='str', default=None),
     )
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec)  # noqa F405
     data = {
         'custom_fields': module.params['custom_fields'],
         'description': module.params['description'],

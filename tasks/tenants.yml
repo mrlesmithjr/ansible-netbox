@@ -11,3 +11,4 @@
     tags: "{{ item['tags']|default(omit) }}"
   loop: "{{ netbox_tenants }}"
   delegate_to: localhost
+  retries: 5

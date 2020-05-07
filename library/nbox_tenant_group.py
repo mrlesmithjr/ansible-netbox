@@ -1,11 +1,16 @@
 #!/usr/bin/env python
+
+"""library/nbox_tenant_group.py"""
+
 # (c) 2019, Larry Smith Jr. <mrlesmithjr@gmail.com>
 #
 # This file is a module for managing NetBox tenant groups
 
-from ansible.module_utils.basic import *
+# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import
+
 import json
 import requests
+from ansible.module_utils.basic import *  # noqa F403
 
 
 def main():
@@ -19,7 +24,7 @@ def main():
         state=dict(type='str', default='present',
                    choices=['absent', 'present'])
     )
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec)  # noqa F405
     results = dict(changed=False)
 
     token = module.params['netbox_token']

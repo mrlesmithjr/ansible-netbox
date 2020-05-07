@@ -1,11 +1,16 @@
 #!/usr/bin/env python
+
+"""library/nbox_tag.py"""
+
 # (c) 2019, Larry Smith Jr. <mrlesmithjr@gmail.com>
 #
 # This file is a module for managing NetBox tags
 
-from ansible.module_utils.basic import *
+# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import,too-many-arguments,too-many-locals # noqa E501
+
 import json
 import requests
+from ansible.module_utils.basic import *  # noqa F403
 
 
 def main():
@@ -21,7 +26,7 @@ def main():
         state=dict(type='str', default='present',
                    choices=['absent', 'present'])
     )
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec)  # noqa F405
     results = dict(changed=False)
 
     token = module.params['netbox_token']
@@ -65,7 +70,7 @@ def get_tags(url, headers):
         tags[tag['name']] = {
             'id': tag['id'], 'slug': tag['slug'],
             'color': tag['color'],
-            'comments': tag['comments']
+            'comments': tag.get('comments')
         }
 
     return tags

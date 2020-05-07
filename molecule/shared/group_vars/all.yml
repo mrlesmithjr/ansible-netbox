@@ -1,0 +1,137 @@
+---
+netbox_ipam_roles:
+  - name: Production
+    state: present
+    weight: 1000
+  - name: Development
+    state: present
+    weight: 1000
+  - name: UAT
+    state: present
+    weight: 1000
+netbox_regions:
+  - name: US
+    state: present
+  - name: East
+    parent: US
+    state: present
+  - name: North Virginia
+    parent: East
+    state: present
+  - name: Ohio
+    parent: East
+    state: present
+netbox_sites:
+  - asn: 65001
+    comments: ""
+    contact_email: johndoe@example.org
+    contact_name: John Doe
+    contact_phone: 111-111-1111
+    custom_fields: {}
+    description: ""
+    facility: AT&T
+    # latitude: null
+    # longitude: null
+    name: ATT
+    physical_address: ""
+    region: East
+    shipping_address: ""
+    state: present
+    status: Active
+    tags: ["ATT", "Customer1"]
+    tenant: Customer1
+    time_zone: US/Eastern
+  - asn: 65002
+    comments: ""
+    contact_email: janedoe@example.org
+    contact_name: Jane Doe
+    contact_phone: 222-222-2222
+    custom_fields: {}
+    description: ""
+    facility: QTS
+    # latitude: null
+    # longitude: null
+    name: QTS
+    physical_address: ""
+    region: East
+    shipping_address: ""
+    state: present
+    status: Retired
+    tags: ["QTS", "Customer2"]
+    tenant: Customer2
+    time_zone: US/Eastern
+netbox_tags:
+  - name: Monitored
+    color: 4caf50
+    state: present
+    comments: Monitored Tag
+  - name: Not Monitored
+    color: aa1409
+    state: present
+    comments: Not Monitored Tag
+netbox_tenant_groups:
+  - name: Acquisitions
+    state: present
+  - name: Customers
+    state: present
+netbox_tenants:
+  - name: Acquisition1
+    group: Acquisitions
+    state: present
+    description: Acquisition 1 Tenant
+    comments: Acquisition 1 Tenant
+    tags:
+      - Not Monitored
+  - name: Customer1
+    group: Customers
+    state: present
+    description: Customer 1 Tenant
+    comments: Customer 1 Tenant
+    tags:
+      - Monitored
+  - name: Customer2
+    group: Customers
+    state: present
+    description: Customer 2 Tenant
+    comments: Customer 2 Tenant
+    tags:
+      - Monitored
+netbox_vlan_groups:
+  - name: ATT-VLAN-GROUP
+    site: ATT
+    state: present
+  - name: QTS-VLAN-GROUP
+    site: QTS
+    state: present
+  - name: TEST-VLAN-GROUP
+    # site: null
+    state: present
+netbox_vrfs:
+  - custom_fields: {}
+    description: Customer1 VRF
+    enforce_unique: true
+    name: Customer1 VRF
+    rd: Customer1-rd
+    state: present
+    tags:
+      - Customer1
+    tenant: Customer1
+  - custom_fields: {}
+    description: Customer2 VRF
+    enforce_unique: true
+    name: Customer2 VRF
+    rd: Customer2-rd
+    state: present
+    tags:
+      - Customer2
+    tenant: Customer2
+
+postgresql_dbs:
+  - name: netbox
+    state: present
+postgresql_users:
+  - name: netbox
+    db: netbox
+    password: netbox
+    state: present
+pri_domain_name: test.vagrant.local

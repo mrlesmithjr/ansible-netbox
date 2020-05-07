@@ -9,3 +9,4 @@
     state: "{{ item['state']|default('present') }}"
   loop: "{{ netbox_tags }}"
   delegate_to: localhost
+  retries: 5

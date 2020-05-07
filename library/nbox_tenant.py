@@ -1,12 +1,16 @@
 #!/usr/bin/env python
+
+"""library/nbox_tenant.py"""
+
 # (c) 2019, Larry Smith Jr. <mrlesmithjr@gmail.com>
 #
 # This file is a module for managing NetBox tenants
 
+# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import,too-many-locals,too-many-arguments # noqa E501
 
-from ansible.module_utils.basic import *
 import json
 import requests
+from ansible.module_utils.basic import *  # noqa F403
 
 
 def main():
@@ -24,7 +28,7 @@ def main():
                    choices=['absent', 'present']),
         tags=dict(type='list', default=[])
     )
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec)  # noqa F405
     results = dict(changed=False)
 
     token = module.params['netbox_token']

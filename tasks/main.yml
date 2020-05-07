@@ -5,6 +5,8 @@
 
 - include_tasks: install.yml
 
+- include_tasks: regions.yml
+
 - include_tasks: tags.yml
 
 - include_tasks: tenant_groups.yml

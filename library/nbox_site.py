@@ -1,11 +1,16 @@
 #!/usr/bin/env python
+
+"""library/nbox_site.py"""
+
 # (c) 2019, Larry Smith Jr. <mrlesmithjr@gmail.com>
 #
 # This file is a module for managing NetBox sites
 
-from ansible.module_utils.basic import *
+# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import,too-many-locals # noqa E501
+
 import json
 import requests
+from ansible.module_utils.basic import *  # noqa F403
 
 SITE_STATUS_CODES = {
     'Active': 1,
@@ -43,7 +48,7 @@ def main():
         tenant=dict(type='str', default=None),
         time_zone=dict(type='str', default=''),
     )
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec)  # noqa F405
     data = {
         'asn': module.params['asn'],
         'comments': module.params['comments'],
@@ -159,7 +164,6 @@ def get_sites(url, headers):
                 'contact_name': site['contact_name'],
                 'contact_phone': site['contact_phone'],
                 'contact_email': site['contact_email'],
-                'custom_fields': site['custom_fields'],
                 'comments': site['comments'],
                 'tags': site['tags'],
                 'custom_fields': site['custom_fields']}

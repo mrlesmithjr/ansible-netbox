@@ -12,3 +12,5 @@
     tags: "{{ item['tags']|default(omit) }}"
     tenant: "{{ item['tenant']|default(omit) }}"
   loop: "{{ netbox_vrfs }}"
+  delegate_to: localhost
+  retries: 5

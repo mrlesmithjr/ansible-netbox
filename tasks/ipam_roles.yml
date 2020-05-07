@@ -7,3 +7,5 @@
     state: "{{ item['state']|default('present') }}"
     weight: "{{ item['weight']|default(omit) }}"
   loop: "{{ netbox_ipam_roles }}"
+  delegate_to: localhost
+  retries: 5

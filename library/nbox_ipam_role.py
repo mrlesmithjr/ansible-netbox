@@ -1,11 +1,16 @@
 #!/usr/bin/env python
+
+"""library/nbox_ipam_role.py"""
+
 # (c) 2019, Larry Smith Jr. <mrlesmithjr@gmail.com>
 #
 # This file is a module for managing NetBox IPAM roles
 
-from ansible.module_utils.basic import *
+# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import
+
 import json
 import requests
+from ansible.module_utils.basic import *  # noqa F403
 
 
 def main():
@@ -20,7 +25,7 @@ def main():
                    choices=['absent', 'present']),
         weight=dict(type='int', default=1000),
     )
-    module = AnsibleModule(argument_spec=argument_spec)
+    module = AnsibleModule(argument_spec=argument_spec)  # noqa F405
     data = {
         'name': module.params['name'],
         'weight': module.params['weight'],

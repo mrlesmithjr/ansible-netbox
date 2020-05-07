@@ -134,3 +134,6 @@
   become: true
   notify:
     - restart supervisor
+
+- name: install | Flushing Handlers
+  meta: flush_handlers
