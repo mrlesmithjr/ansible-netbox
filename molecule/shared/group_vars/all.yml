@@ -38,7 +38,9 @@ netbox_sites:
     shipping_address: ""
     state: present
     status: Active
-    tags: ["ATT", "Customer1"]
+    tags:
+      - ATT
+      - Customer1
     tenant: Customer1
     time_zone: US/Eastern
   - asn: 65002
@@ -57,18 +59,20 @@ netbox_sites:
     shipping_address: ""
     state: present
     status: Retired
-    tags: ["QTS", "Customer2"]
+    tags:
+      - QTS
+      - Customer2
     tenant: Customer2
     time_zone: US/Eastern
 netbox_tags:
   - name: Monitored
     color: 4caf50
     state: present
-    comments: Monitored Tag
+    description: Monitored Tag
   - name: Not Monitored
     color: aa1409
     state: present
-    comments: Not Monitored Tag
+    description: Not Monitored Tag
 netbox_tenant_groups:
   - name: Acquisitions
     state: present

@@ -2,7 +2,7 @@
 - name: tags | Manage Tag(s)
   nbox_tag:
     color: "{{ item['color']|default(omit) }}"
-    comments: "{{ item['comments']|default(omit) }}"
+    description: "{{ item['description']|default(omit) }}"
     name: "{{ item['name'] }}"
     netbox_token: "{{ netbox_token }}"
     netbox_url: "{{ netbox_url }}"

@@ -6,7 +6,7 @@
 #
 # This file is a module for managing NetBox sites
 
-# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import,too-many-locals # noqa E501
+# pylint: disable=unused-wildcard-import,redefined-builtin,wildcard-import,too-many-locals,too-many-arguments # noqa E501
 
 import json
 import requests
@@ -107,12 +107,8 @@ def main():
         if site_name not in existing_sites:
             add_site(url, headers, site['data'], results, module)
         else:
-            site_lookup = existing_sites.get(site_name)
-            site_lookup_data = site_lookup['data']
-            site_lookup_id = site_lookup['id']
-            if site_lookup_data != site['data']:
-                site['id'] = site_lookup_id
-                update_site(url, headers, site, results, module)
+            existing_site = existing_sites.get(site_name)
+            update_site(url, headers, site, existing_site, results, module)
     else:
         if site_name in existing_sites:
             site_lookup = existing_sites.get(site_name)
@@ -232,23 +228,44 @@ def add_site(url, headers, data, results, module):
         module.fail_json(msg=response.text)
 
 
-def update_site(url, headers, site, results, module):
+def update_site(url, headers, site, existing_site, results, module):
     '''
     Update existing site
     '''
-    site_id = site['id']
-    api_url = f'{url}/api/dcim/sites/{site_id}/'
-    payload = site['data']
-    response = requests.request(
-        'PATCH', api_url, data=json.dumps(payload), headers=headers)
-    if response.status_code == 200:
-        site_name = site['data']['name']
-        results.update(changed=True,
-                       msg=f'{site_name} successfully updated!',
-                       status_code=response.status_code
-                       )
-    else:
-        module.fail_json(msg=response.text)
+    changed = False
+    existing_site_data = existing_site['data']
+    site_data = site['data']
+
+    data_comparisons = ['asn', 'comments',
+                        'contact_email', 'contact_name', 'contact_phone',
+                        'custom_fields', 'facility', 'facility', 'latitude',
+                        'longitude', 'physical_address', 'shipping_address',
+                        'tags', 'time_zone']
+
+    for item in data_comparisons:
+        existing = existing_site_data[item]
+        new = site_data[item]
+        if isinstance(existing, list):
+            existing = existing.sort()
+            new = new.sort()
+        if existing != new:
+            changed = True
+
+    if changed:
+        site_id = existing_site['id']
+        api_url = f'{url}/api/dcim/sites/{site_id}/'
+        payload = site['data']
+        response = requests.request(
+            'PATCH', api_url, data=json.dumps(payload), headers=headers)
+
+        if response.status_code == 200:
+            site_name = site['data']['name']
+            results.update(changed=changed,
+                           msg=f'{site_name} successfully updated!',
+                           status_code=response.status_code
+                           )
+        else:
+            module.fail_json(msg=response.text)
 
 
 def delete_site(url, headers, site, results, module):

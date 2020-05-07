@@ -142,11 +142,11 @@ netbox_tags:
   # - name: Monitored
   #   color: 4caf50
   #   state: present
-  #   comments: Monitored Tag
+  #   description: Monitored Tag
   # - name: Not Monitored
   #   color: aa1409
   #   state: present
-  #   comments: Not Monitored Tag
+  #   description: Not Monitored Tag
 
 # Define tenant groups
 netbox_tenant_groups:
