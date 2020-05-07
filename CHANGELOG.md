@@ -1,3 +1,9 @@
+commit 0227b25d243115c00c93b9e450741e57ac218375
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 15:43:58 2020 -0400
+
+    Added vars/checks for netbox listen address and port
+
 commit 63888d98619f8dc6ee618baa726d9b35399b4af7
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Thu May 7 15:43:21 2020 -0400

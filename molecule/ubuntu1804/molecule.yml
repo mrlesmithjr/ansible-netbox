@@ -7,9 +7,10 @@ dependency:
 driver:
   name: docker
 lint: |
+  set -e
   yamllint .
   ansible-lint
-  flake8
+  flake8 --exclude=venv
 platforms:
   - name: ubuntu1804
     image: jrei/systemd-ubuntu:18.04
