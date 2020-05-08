@@ -1,16 +1,6 @@
 ---
-- name: Converge
+- name: Converge - Pre-req Roles
   hosts: all
-  vars:
-    postgresql_dbs:
-      - name: netbox
-        state: present
-    postgresql_users:
-      - name: netbox
-        db: netbox
-        password: netbox
-        state: present
-    pri_domain_name: test.vagrant.local
   tasks:
     - name: Include ansible-bootstrap-python
       include_role:
@@ -21,6 +11,10 @@
     - name: Include ansible-redis
       include_role:
         name: ansible-redis
+
+- name: Converge
+  hosts: all
+  tasks:
     - name: Include ansible-netbox
       include_role:
         name: ansible-netbox

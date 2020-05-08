@@ -9,23 +9,25 @@ netbox_db: netbox
 netbox_debian_pre_reqs:
   - build-essential
   - graphviz
-  - libffi-dev
-  - libpq-dev
-  - libssl-dev
-  - libxml2-dev
-  - libxslt1-dev
   - nginx
-  - python3
-  - python3-dev
-  - python3-pip
-  - python3-venv
   - supervisor
-  - zlib1g-dev
 
 netbox_group: netbox
 netbox_home: "{{ netbox_install_dir + '/netbox' }}"
 netbox_install_dir: /opt
+
+netbox_listen_address: 127.0.0.1
+netbox_listen_port: 8001
+
+# Expose Prometheus monitoring metrics at the HTTP endpoint '/metrics'
+netbox_metrics_enabled: false
+
 netbox_pri_domain: vagrant.local
+
+# Redis configurations
+netbox_redis_host: localhost
+netbox_redis_password: ""
+netbox_redis_port: 6379
 
 netbox_secret_key: U-7xmCcYFBovnLf#)NT1yJjrZhD*qP_zt$bA=si65MeI^92Gdl
 
@@ -37,10 +39,13 @@ netbox_superuser_email: "netbox@{{ netbox_pri_domain }}"
 netbox_superuser_script: |
   from django.contrib.auth.models import User
   from base64 import b64decode
+  from users.models import Token
   password = b64decode("{{ netbox_superuser_password | b64encode }}").decode("UTF-8")
   query = User.objects.filter(username="{{ netbox_superuser_username }}")
   if not query.exists():
     User.objects.create_superuser("{{ netbox_superuser_username }}", "{{ netbox_superuser_email }}", password)
+    user = User.objects.get(username="{{ netbox_superuser_username }}")
+    Token.objects.create(user=user, key="{{ netbox_token }}")
     print("changed")
   else:
     user = User.objects.get(username="{{ netbox_superuser_username }}")
@@ -53,5 +58,162 @@ netbox_superuser_script: |
       print("changed")
 
 netbox_user: netbox
-netbox_version: 2.6.2
+netbox_version: 2.8.3
 netbox_virtualenv: "{{ netbox_home + '/venv' }}"
+
+### Everything below is based on custom module(s)
+# Define your user token
+netbox_token: 0123456789abcdef0123456789abcdef01234567
+
+# Define url for NetBox API
+netbox_url: http://127.0.0.1:8080
+
+# Define regions
+netbox_regions:
+  []
+  # - name: US
+  #   state: present
+  # - name: East
+  #   parent: US
+  #   state: present
+  # - name: North Virginia
+  #   parent: East
+  #   state: present
+  # - name: Ohio
+  #   parent: East
+  #   state: present
+
+# Define sites
+netbox_sites:
+  []
+  # - asn: 65001
+  #   comments: ""
+  #   contact_email: johndoe@example.org
+  #   contact_name: John Doe
+  #   contact_phone: 111-111-1111
+  #   custom_fields: {}
+  #   description: ""
+  #   facility: AT&T
+  #   # latitude: null
+  #   # longitude: null
+  #   name: ATT
+  #   physical_address: ""
+  #   region: East
+  #   shipping_address: ""
+  #   state: present
+  #   status: Active
+  #   tags: ["ATT", "Customer1"]
+  #   tenant: Customer1
+  #   time_zone: US/Eastern
+  # - asn: 65002
+  #   comments: ""
+  #   contact_email: janedoe@example.org
+  #   contact_name: Jane Doe
+  #   contact_phone: 222-222-2222
+  #   custom_fields: {}
+  #   description: ""
+  #   facility: QTS
+  #   # latitude: null
+  #   # longitude: null
+  #   name: QTS
+  #   physical_address: ""
+  #   region: East
+  #   shipping_address: ""
+  #   state: present
+  #   status: Retired
+  #   tags: ["QTS", "Customer2"]
+  #   tenant: Customer2
+  #   time_zone: US/Eastern
+
+# Define tags
+netbox_tags:
+  []
+  # - name: Monitored
+  #   color: 4caf50
+  #   state: present
+  #   description: Monitored Tag
+  # - name: Not Monitored
+  #   color: aa1409
+  #   state: present
+  #   description: Not Monitored Tag
+
+# Define tenant groups
+netbox_tenant_groups:
+  []
+  # - name: Acquisitions
+  #   state: present
+  # - name: Customers
+  #   state: present
+
+# Define tenants
+netbox_tenants:
+  []
+  # - name: Acquisition1
+  #   group: Acquisitions
+  #   state: present
+  #   description: Acquisition 1 Tenant
+  #   comments: Acquisition 1 Tenant
+  #   tags:
+  #     - Not Monitored
+  # - name: Customer1
+  #   group: Customers
+  #   state: present
+  #   description: Customer 1 Tenant
+  #   comments: Customer 1 Tenant
+  #   tags:
+  #     - Monitored
+  # - name: Customer2
+  #   group: Customers
+  #   state: present
+  #   description: Customer 2 Tenant
+  #   comments: Customer 2 Tenant
+  #   tags:
+  #     - Monitored
+
+# Define IPAM roles
+netbox_ipam_roles:
+  []
+  # - name: Production
+  #   state: present
+  #   weight: 1000
+  # - name: Development
+  #   state: present
+  #   weight: 1000
+  # - name: UAT
+  #   state: present
+  #   weight: 1000
+
+# Define VLAN groups
+netbox_vlan_groups:
+  []
+  # - name: ATT-VLAN-GROUP
+  #   site: ATT
+  #   state: present
+  # - name: QTS-VLAN-GROUP
+  #   site: QTS
+  #   state: present
+  # - name: TEST-VLAN-GROUP
+  #   # site: null
+  #   state: present
+
+# Define vrfs
+netbox_vrfs:
+  []
+  # - custom_fields: {}
+  #   description: Customer1 VRF
+  #   enforce_unique: true
+  #   name: Customer1 VRF
+  #   rd: Customer1-rd
+  #   state: present
+  #   tags:
+  #     - Customer1
+  #   tenant: Customer1
+  # - custom_fields: {}
+  #   description: Customer2 VRF
+  #   enforce_unique: true
+  #   name: Customer2 VRF
+  #   rd: Customer2-rd
+  #   state: present
+  #   tags:
+  #     - Customer2
+  #   tenant: Customer2

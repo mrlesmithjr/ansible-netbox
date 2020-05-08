@@ -134,3 +134,12 @@
   become: true
   notify:
     - restart supervisor
+
+- name: install | Flushing Handlers
+  meta: flush_handlers
+
+- name: install | Ensure NetBox is up
+  wait_for:
+    port: "{{ netbox_listen_port }}"
+    host: "{{ netbox_listen_address }}"
+    delay: 10
