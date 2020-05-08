@@ -1,12 +1,7 @@
 ---
-- name: Converge
+- name: Converge - Pre-req Roles
   hosts: all
   tasks:
-    - name: Update APT Cache
-      apt:
-        update_cache: true
-      become: true
-      when: ansible_os_family == "Debian"
     - name: Include ansible-bootstrap-python
       include_role:
         name: ansible-bootstrap-python
@@ -16,6 +11,10 @@
     - name: Include ansible-redis
       include_role:
         name: ansible-redis
+
+- name: Converge
+  hosts: all
+  tasks:
     - name: Include ansible-netbox
       include_role:
         name: ansible-netbox

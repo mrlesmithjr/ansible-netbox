@@ -1,3 +1,13 @@
+commit 775200c656d5fd6560bc6c22c6820dfb580ad609
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 22:54:15 2020 -0400
+
+    Removed pre-reqs that are covered by add'l roles
+    
+    Because we need to use roles defined in requirements.yml, we have
+    removed the pre-reqs that are not needed. Having these causes
+    idempotency issues when using additional roles required.
+
 commit 00c2013c744549fcac98bf26e676d341a9c88883
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Thu May 7 19:48:03 2020 -0400
