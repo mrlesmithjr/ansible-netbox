@@ -1,3 +1,13 @@
+commit eb324125ceb0e955743e9477b27556e6154d7f6f
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri May 8 00:03:04 2020 -0400
+
+    Reorganized converge Molecule playbook
+    
+    Debian10 is failing indempotency and it appears that this playbook with
+    all roles in one play is causing the issue. Works fine local now. Will
+    test in pipeline testing next.
+
 commit 775200c656d5fd6560bc6c22c6820dfb580ad609
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Thu May 7 22:54:15 2020 -0400
