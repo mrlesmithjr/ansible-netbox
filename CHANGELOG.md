@@ -1,3 +1,17 @@
+commit 00c2013c744549fcac98bf26e676d341a9c88883
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 19:48:03 2020 -0400
+
+    Fixing Sites/tags idempotency issues
+    
+    There was a lot wrong with these when updating items.
+
+commit c9367c20d9a9b517c09b3473231cbfcdd247de40
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Thu May 7 16:06:56 2020 -0400
+
+    Updated Molecule linting patterns
+
 commit 0227b25d243115c00c93b9e450741e57ac218375
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Thu May 7 15:43:58 2020 -0400
