@@ -20,3 +20,5 @@
 - include_tasks: ipam_roles.yml
 
 - include_tasks: vlan_groups.yml
+
+- include_tasks: vlan.yml

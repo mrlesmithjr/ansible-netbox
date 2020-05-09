@@ -110,6 +110,40 @@ netbox_vlan_groups:
   - name: TEST-VLAN-GROUP
     # site: null
     state: present
+netbox_vlans:
+  - name: ATT-VLAN-1000
+    description: ATT VLAN ID 1000
+    group: ATT-VLAN-GROUP
+    role: Production
+    site: ATT
+    state: present
+    status: Active
+    tags:
+      - Monitored
+    tenant: Customer1
+    vid: 1000
+  - name: ATT-VLAN-1001
+    description: ATT VLAN ID 1001
+    group: ATT-VLAN-GROUP
+    role: UAT
+    site: ATT
+    state: present
+    status: Active
+    tags:
+      - Monitored
+    tenant: Customer2
+    vid: 1001
+  - name: QTS-VLAN-1000
+    description: QTS VLAN ID 1000
+    group: QTS-VLAN-GROUP
+    role: Development
+    site: QTS
+    state: absent
+    status: Planned
+    tags:
+      - Not Monitored
+    tenant: Acquisition1
+    vid: 1000
 netbox_vrfs:
   - custom_fields: {}
     description: Customer1 VRF
