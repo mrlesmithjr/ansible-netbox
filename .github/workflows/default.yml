@@ -24,12 +24,6 @@ jobs:
           pip3 install -r requirements.txt
           ansible --version
           molecule --version
-      - name: flake8
-        run: |
-          flake8 library/
-      - name: pylint
-        run: |
-          pylint library/
       - name: Test with molecule
         run: |
           # molecule test --scenario-name centos7

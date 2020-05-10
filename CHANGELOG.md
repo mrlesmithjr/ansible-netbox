@@ -1,3 +1,36 @@
+commit 371c82cf9e12f4dbbfa7911e1bf957ec8076f2c6
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat May 9 20:30:14 2020 -0400
+
+    Updated formatting of vars
+
+commit a94579407153873ca6bd29e41997f1ae06dcf17e
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat May 9 10:50:17 2020 -0400
+
+    Updated pipelines to perform Python linting
+    
+    Because we are using custom modules here, we need to ensure they pass
+    linting.
+
+commit 7df20155c78b0a22fcbd9ccff531cdaecb6a0dcc
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Sat May 9 10:49:35 2020 -0400
+
+    Added custom module for managing VLANs
+    
+    New custom module to manage VLANs
+
+commit 5baf1c71f3f7e646a86180caea9bc2bb6c83052c
+Author: Larry Smith Jr <mrlesmithjr@gmail.com>
+Date:   Fri May 8 00:25:00 2020 -0400
+
+    Disabled Debian10 testing
+    
+    Idempotence testing not working for Debian10 in pipeline testing.
+    Works local but...
+    Will investigate later.
+
 commit eb324125ceb0e955743e9477b27556e6154d7f6f
 Author: Larry Smith Jr <mrlesmithjr@gmail.com>
 Date:   Fri May 8 00:03:04 2020 -0400

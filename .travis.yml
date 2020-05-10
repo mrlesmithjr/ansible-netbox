@@ -10,8 +10,6 @@ install:
   - ansible --version
   - molecule --version
 script:
-  - flake8 library/
-  - pylint library/
   # - molecule test --scenario-name centos7
   # - molecule test --scenario-name centos8
   # - molecule test --scenario-name debian8
