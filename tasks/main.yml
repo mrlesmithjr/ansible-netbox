@@ -4,21 +4,3 @@
   when: ansible_os_family == 'Debian'
 
 - include_tasks: install.yml
-
-- include_tasks: regions.yml
-
-- include_tasks: tags.yml
-
-- include_tasks: tenant_groups.yml
-
-- include_tasks: tenants.yml
-
-- include_tasks: sites.yml
-
-- include_tasks: vrfs.yml
-
-- include_tasks: ipam_roles.yml
-
-- include_tasks: vlan_groups.yml
-
-- include_tasks: vlan.yml
