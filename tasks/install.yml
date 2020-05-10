@@ -72,7 +72,7 @@
   shell: "printf '{{ netbox_superuser_script }}' |\
     {{ netbox_virtualenv + '/bin/python' + ' ' + netbox_app_path + '/manage.py shell' }}"
   register: _netbox_superuser_result
-  changed_when: "'changed' in _netbox_superuser_result['stdout']"
+  changed_when: "'changed' in _netbox_superuser_result.stdout"
   become: true
   become_user: "{{ netbox_user }}"
   vars:
