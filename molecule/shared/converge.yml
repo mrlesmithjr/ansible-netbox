@@ -1,6 +1,10 @@
 ---
 - name: Converge - Pre-req Roles
   hosts: all
+  vars:
+    redis_bind_addresses:
+      - 0.0.0.0
+    redis_config_redis: true
   tasks:
     - name: Include ansible-bootstrap-python
       include_role:
