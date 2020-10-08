@@ -58,7 +58,7 @@ netbox_superuser_script: |
       print("changed")
 
 netbox_user: netbox
-netbox_version: 2.8.3
+netbox_version: 2.9.4
 netbox_virtualenv: "{{ netbox_home + '/venv' }}"
 
 ### Everything below is based on custom module(s)
