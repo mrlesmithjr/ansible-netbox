@@ -3,8 +3,8 @@ galaxy_info:
   author: Larry Smith Jr.
   description: Ansible role to install/configure NetBox
   license: MIT
+  min_ansible_version: 2.8
 
-  min_ansible_version: 2.4
   platforms:
     - name: Debian
       versions:
@@ -18,5 +18,6 @@ galaxy_info:
   galaxy_tags:
     - system
     - network
+    - dcim
 
 dependencies: []
