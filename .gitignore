@@ -8,3 +8,13 @@ env.bak/
 venv.bak/
 
 poetry.lock
+
+### macOS ###
+.DS_Store
+
+### VisualStudioCode ###
+.vscode/
+*.code-workspace
+
+### Ansible ###
+.cache/
